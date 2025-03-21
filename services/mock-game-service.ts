@@ -134,7 +134,7 @@ export class MockGameService implements GameService {
     let location = "Unknown Location";
     
     if (homeTeam) {
-      location = homeTeam.location;
+      location = homeTeam.location || "Unknown Location";
       
       // Check if it's NBA or NHL (which use 'arena' instead of 'stadium')
       if (league === "NBA" || league === "NHL" || league === "NCAAB") {

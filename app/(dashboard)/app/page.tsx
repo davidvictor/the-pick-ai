@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getUserForAppRouter } from '@/lib/db/queries';
-import { PerformanceSummary } from '@/components/dashboard/performance-summary';
+//import { PerformanceSummary } from '@/components/dashboard/performance-summary';
 import { TopPicks } from '@/components/dashboard/top-picks';
 import { UpcomingGames } from '@/components/dashboard/upcoming-games';
 import { LeaguesAccess } from '@/components/dashboard/leagues-access';
