@@ -87,17 +87,18 @@ let appCookies: any = null;
  */
 export async function getAppRouterSession() {
   try {
-    if (!appCookies) {
-      // Only load this once and cache it
-      const { cookies } = require('next/headers');
-      appCookies = cookies;
-    }
+    // Use dynamic import to ensure server-only code and better tree-shaking
+    const { cookies } = await import('next/headers');
     
-    const sessionValue = appCookies().get('session')?.value;
+    // Get cookies instance and properly await it
+    const cookieStore = await cookies();
+    const sessionValue = cookieStore.get('session')?.value;
+    
     if (!sessionValue) return null;
-    return verifyToken(sessionValue);
+    return await verifyToken(sessionValue);
   } catch (error) {
-    throw new Error('getAppRouterSession must only be used in Server Components in the app/ directory');
+    console.error('Session access error:', error);
+    return null; // Return null instead of throwing to avoid hard crashes
   }
 }
 
@@ -106,11 +107,8 @@ export async function getAppRouterSession() {
  */
 export async function setAppRouterSession(user: NewUser) {
   try {
-    if (!appCookies) {
-      // Only load this once and cache it
-      const { cookies } = require('next/headers');
-      appCookies = cookies;
-    }
+    // Use dynamic import
+    const { cookies } = await import('next/headers');
     
     const expiresInOneDay = new Date(Date.now() + 24 * 60 * 60 * 1000);
     const session: SessionData = {
@@ -119,13 +117,16 @@ export async function setAppRouterSession(user: NewUser) {
     };
     const encryptedSession = await signToken(session);
     
-    appCookies().set('session', encryptedSession, {
+    // Get cookies instance and properly await it
+    const cookieStore = await cookies();
+    cookieStore.set('session', encryptedSession, {
       expires: expiresInOneDay,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
     });
   } catch (error) {
-    throw new Error('setAppRouterSession must only be used in Server Components in the app/ directory');
+    console.error('Session set error:', error);
+    throw new Error('Failed to set session: ' + (error as Error).message);
   }
 }

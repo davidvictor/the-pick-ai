@@ -1,21 +1,25 @@
-import { protectServerPage } from '@/lib/auth/protect';
 import AppLayout from './layout-client';
+import { withAuthentication } from '@/lib/hoc/with-authentication';
 
 /**
  * Server component wrapper for app routes
  * This provides the server-side authentication protection
  * for all routes under /app/*
+ * 
+ * We use the withAuthentication HOC which:
+ * 1. Applies authentication protection
+ * 2. Ensures dynamic rendering for cookie access
  */
-export default async function AppServerLayout({ 
+function AppServerLayout({ 
   children 
 }: { 
   children: React.ReactNode 
 }) {
-  // This will redirect if not authenticated - server-side check
-  await protectServerPage({ 
-    returnTo: '/app' // Return to app dashboard after login
-  });
-  
-  // If we get here, the user is authenticated, render the client UI layout
-  return <AppLayout>{children}</AppLayout>; 
+  // The authentication check is now handled by the HOC
+  return <AppLayout>{children}</AppLayout>;
 }
+
+// Apply authentication and dynamic rendering in one step
+export default withAuthentication(AppServerLayout, {
+  returnTo: '/app' // Return to app dashboard after login
+});

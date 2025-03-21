@@ -53,6 +53,8 @@ export async function middleware(request: NextRequest) {
     if (PROTECTED_ROUTES.test(pathname)) {
       try {
         // Get session directly from the request cookies (Edge runtime)
+        // Note: In middleware we use request.cookies which doesn't need awaiting
+        // This is different from the cookies() function in server components
         const sessionCookie = request.cookies.get('session')?.value;
         
         let session = null;

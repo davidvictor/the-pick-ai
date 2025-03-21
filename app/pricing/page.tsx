@@ -2,6 +2,7 @@ import { MarketingPageLayout } from '@/components/marketing/page-layout';
 import { getStripeProducts, getStripePrices } from '@/lib/payments/stripe';
 import { appConfig } from '@/lib/app-config';
 import { PricingContent } from './pricing-client';
+import { withDynamicRendering } from '@/lib/hoc/with-dynamic-rendering';
 
 // Define interfaces for Stripe data structures
 interface StripeProduct {
@@ -20,7 +21,8 @@ interface StripePrice {
   trialPeriodDays?: number | null;
 }
 
-export default async function PricingPage() {
+// PricingPage needs dynamic rendering since it fetches data from Stripe
+async function PricingPage() {
   // Default values from app config to use as fallbacks
   const defaultConfig = {
     basePlan: {
@@ -168,3 +170,6 @@ export default async function PricingPage() {
     </MarketingPageLayout>
   );
 }
+
+// Apply dynamic rendering to the component
+export default withDynamicRendering(PricingPage);

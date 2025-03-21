@@ -15,19 +15,25 @@ export async function protectServerPage(options?: {
   redirectTo?: string, 
   returnTo?: string
 }) {
-  const session = await getAppRouterSession();
-  
-  if (!session) {
-    // Default to sign-in, but allow custom redirect destination
-    const redirectPath = options?.redirectTo || '/sign-in';
+  try {
+    const session = await getAppRouterSession();
     
-    // If returnTo is specified, add it as a query param
-    const redirectUrl = options?.returnTo 
-      ? `${redirectPath}?returnTo=${encodeURIComponent(options.returnTo)}`
-      : redirectPath;
+    if (!session) {
+      // Default to sign-in, but allow custom redirect destination
+      const redirectPath = options?.redirectTo || '/sign-in';
+      
+      // If returnTo is specified, add it as a query param
+      const redirectUrl = options?.returnTo 
+        ? `${redirectPath}?returnTo=${encodeURIComponent(options.returnTo)}`
+        : redirectPath;
+      
+      redirect(redirectUrl);
+    }
     
-    redirect(redirectUrl);
+    return session;
+  } catch (error) {
+    console.error('Protection error:', error);
+    // Still redirect on error for security
+    redirect(options?.redirectTo || '/sign-in');
   }
-  
-  return session;
 }
