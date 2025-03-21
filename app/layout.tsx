@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { UserProvider } from '@/lib/auth';
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 //import type { ThemeProviderProps } from "next-themes";
-import { getUser } from '@/lib/db/queries';
+import { getUserForAppRouter } from '@/lib/db/queries';
 import "../styles/font-override.css";
 import "../styles/markdown.css";
 import "../styles/custom.css";
@@ -53,7 +53,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let userPromise = getUser();
+  let userPromise = getUserForAppRouter();
 
   return (
     <html

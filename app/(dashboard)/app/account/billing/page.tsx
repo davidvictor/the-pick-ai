@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { getUser } from '@/lib/db/queries';
+import { getUserForAppRouter } from '@/lib/db/queries';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { customerPortalAction, checkoutAction } from '@/lib/payments/actions';
@@ -67,7 +67,7 @@ function PricingCard({
 }
 
 export default async function BillingPage() {
-  const user = await getUser();
+  const user = await getUserForAppRouter();
 
   if (!user) {
     redirect('/sign-in');

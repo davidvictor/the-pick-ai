@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getSession } from '@/lib/auth/session';
+import { verifyToken } from '@/lib/auth/session';
 
 // Define pattern for protected routes
 const PROTECTED_ROUTES = /^\/app\/.*/;
@@ -52,7 +52,18 @@ export async function middleware(request: NextRequest) {
     // Authentication check for protected routes
     if (PROTECTED_ROUTES.test(pathname)) {
       try {
-        const session = await getSession();
+        // Get session directly from the request cookies (Edge runtime)
+        const sessionCookie = request.cookies.get('session')?.value;
+        
+        let session = null;
+        if (sessionCookie) {
+          // Verify the session token
+          try {
+            session = await verifyToken(sessionCookie);
+          } catch (tokenError) {
+            console.error('Token verification error:', tokenError);
+          }
+        }
         
         if (!session) {
           // Create a login URL with return path

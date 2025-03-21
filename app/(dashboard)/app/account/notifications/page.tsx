@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation';
-import { getUser } from '@/lib/db/queries';
+import { getUserForAppRouter } from '@/lib/db/queries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Bell, Mail, Megaphone, Newspaper } from 'lucide-react';
 
 export default async function NotificationsPage() {
-  const user = await getUser();
+  const user = await getUserForAppRouter();
 
   if (!user) {
     redirect('/sign-in');

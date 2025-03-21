@@ -1,7 +1,24 @@
 import { z } from 'zod';
 import { User } from '@/lib/db/schema';
-import { getUserById, getUser } from '@/lib/db/queries';
+import { getUserById, getUser, getUserForAppRouter } from '@/lib/db/queries';
 import { redirect } from 'next/navigation';
+
+/**
+ * Gets the user in either App Router or Pages Router contexts
+ */
+async function getCurrentUser() {
+  try {
+    // First try with App Router method
+    const user = await getUserForAppRouter();
+    if (user) return user;
+  } catch (error) {
+    // App Router method failed, try Pages Router method
+    // Intentionally swallow error to try fallback
+  }
+  
+  // Fallback to Pages Router method
+  return getUser();
+}
 
 export type ActionState = {
   error?: string;
@@ -39,7 +56,7 @@ export function validatedActionWithUser<S extends z.ZodType<any, any>, T>(
   action: ValidatedActionWithUserFunction<S, T>
 ) {
   return async (prevState: ActionState, formData: FormData): Promise<T> => {
-    const user = await getUser();
+    const user = await getCurrentUser();
     if (!user) {
       throw new Error('User is not authenticated');
     }
@@ -60,7 +77,7 @@ type ActionWithUserFunction<T> = (
 
 export function withTeam<T>(action: ActionWithUserFunction<T>) {
   return async (formData: FormData): Promise<T> => {
-    const user = await getUser();
+    const user = await getCurrentUser();
     if (!user) {
       redirect('/sign-in');
     }

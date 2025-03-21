@@ -169,6 +169,11 @@ header .logo {
   --logo-width: 24px;
 }
 
+header.marketing .logo,
+footer.marketing .logo {
+  --logo-width: 128px;
+}
+
 @media only screen and (max-width: 600px) {
   .logo {
     --logo-width: 144px;

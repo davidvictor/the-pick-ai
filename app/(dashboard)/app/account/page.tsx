@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
-import { getUser } from '@/lib/db/queries';
+import { getUserForAppRouter } from '@/lib/db/queries';
 
 export default async function AccountPage() {
-  const user = await getUser();
+  const user = await getUserForAppRouter();
 
   if (!user) {
     redirect('/sign-in');

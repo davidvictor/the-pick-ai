@@ -11,7 +11,7 @@ import {
   type NewActivityLog,
   ActivityType,
 } from '@/lib/db/schema';
-import { comparePasswords, hashPassword, setSession } from '@/lib/auth/session';
+import { comparePasswords, hashPassword, setAppRouterSession } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createCheckoutSession } from '@/lib/payments/stripe';
@@ -72,7 +72,7 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
   }
 
   await Promise.all([
-    setSession(foundUser),
+    setAppRouterSession(foundUser),
     logActivity(foundUser.id, ActivityType.SIGN_IN),
   ]);
 
@@ -128,7 +128,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
 
   await Promise.all([
     logActivity(createdUser.id, ActivityType.SIGN_UP),
-    setSession(createdUser),
+    setAppRouterSession(createdUser),
   ]);
 
   const redirectTo = formData.get('redirect') as string | null;
@@ -145,7 +145,10 @@ export async function signOut() {
   if (user) {
     await logActivity(user.id, ActivityType.SIGN_OUT);
   }
-  (await cookies()).delete('session');
+  // Use the cookies API from next/headers directly since we're in a Server Action
+  // This is safe in the app/ directory
+  const cookiesStore = await cookies();
+  cookiesStore.delete('session');
 }
 
 const updatePasswordSchema = z
@@ -218,7 +221,8 @@ export const deleteAccount = validatedActionWithUser(
       })
       .where(eq(users.id, user.id));
 
-    (await cookies()).delete('session');
+    const cookiesStore = await cookies();
+    cookiesStore.delete('session');
     redirect('/sign-in');
   },
 );

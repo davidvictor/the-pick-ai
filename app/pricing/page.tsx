@@ -1,20 +1,16 @@
-import { checkoutAction } from '@/lib/payments/actions';
-import { Check, Star, Zap } from 'lucide-react';
-import { getStripePrices, getStripeProducts } from '@/lib/payments/stripe';
-import { SubmitButton } from './submit-button';
+"use client";
+
+import { MarketingPageLayout } from '@/components/marketing/page-layout';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Check, Star, Zap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-// Prices are fresh for one hour max
-export const revalidate = 3600;
-
-// PricingCard component with enhanced design
 function PricingCard({
   name,
   price,
   interval,
   trialDays,
   features,
-  priceId,
   isPremium = false,
 }: {
   name: string;
@@ -22,7 +18,6 @@ function PricingCard({
   interval: string;
   trialDays: number;
   features: string[];
-  priceId?: string;
   isPremium?: boolean;
 }) {
   return (
@@ -41,7 +36,7 @@ function PricingCard({
           with {trialDays} day free trial
         </CardDescription>
         <div className="mt-2">
-          <span className="text-3xl font-bold">${price / 100}</span>
+          <span className="text-3xl font-bold">${price}</span>
           <span className="text-muted-foreground ml-1">/ {interval}</span>
         </div>
       </CardHeader>
@@ -56,42 +51,26 @@ function PricingCard({
         </ul>
       </CardContent>
       <CardFooter className="pt-2 pb-6">
-        <form action={checkoutAction} className="w-full">
-          <input type="hidden" name="priceId" value={priceId} />
-          <SubmitButton className={`w-full ${isPremium ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''}`} />
-        </form>
+        <Button className={`w-full ${isPremium ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''}`}>
+          Get Started
+        </Button>
       </CardFooter>
     </Card>
   );
 }
 
-export default async function PricingPage() {
-  const [prices, products] = await Promise.all([
-    getStripePrices(),
-    getStripeProducts(),
-  ]);
-
-  const basePlan = products.find((product) => product.name === 'Base');
-  const plusPlan = products.find((product) => product.name === 'Plus');
-
-  const basePrice = prices.find((price) => price.productId === basePlan?.id);
-  const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
-
+export default function PricingPage() {
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">Simple, Transparent Pricing</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Choose the plan that works best for your needs. All plans include a free trial.
-        </p>
-      </div>
-      
+    <MarketingPageLayout
+      title="Pricing Plans"
+      subtitle="Choose the plan that works best for your betting needs. All plans include a free trial."
+    >
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         <PricingCard
-          name={basePlan?.name || 'Base'}
-          price={basePrice?.unitAmount || 800}
-          interval={basePrice?.interval || 'month'}
-          trialDays={basePrice?.trialPeriodDays || 7}
+          name="Base"
+          price={8}
+          interval="month"
+          trialDays={7}
           features={[
             'Unlimited Usage',
             'Unlimited Workspace Members',
@@ -99,13 +78,12 @@ export default async function PricingPage() {
             'Access to Core Features',
             'Regular Updates'
           ]}
-          priceId={basePrice?.id}
         />
         <PricingCard
-          name={plusPlan?.name || 'Plus'}
-          price={plusPrice?.unitAmount || 1200}
-          interval={plusPrice?.interval || 'month'}
-          trialDays={plusPrice?.trialPeriodDays || 7}
+          name="Plus"
+          price={12}
+          interval="month"
+          trialDays={7}
           features={[
             'Everything in Base, and:',
             'Early Access to New Features',
@@ -113,10 +91,59 @@ export default async function PricingPage() {
             'Slack Community Access',
             'Advanced Analytics'
           ]}
-          priceId={plusPrice?.id}
           isPremium={true}
         />
       </div>
-    </main>
+      
+      {/* Additional information section */}
+      <div className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h2>
+        
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              Can I change plans later?
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              Yes, you can upgrade or downgrade your plan at any time. If you upgrade, you'll be charged the prorated difference immediately. If you downgrade, the change will take effect at the end of your current billing cycle.
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              What happens after my free trial?
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              After your free trial period ends, your account will automatically be charged for the plan you selected. You can cancel anytime before the trial ends to avoid being charged.
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              Is there a refund policy?
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              We offer a 14-day money-back guarantee. If you're not satisfied with our service, contact our support team within 14 days of your initial purchase for a full refund.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Contact information */}
+      <div className="mt-12 bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          Need help choosing a plan?
+        </h3>
+        <p className="text-gray-600 dark:text-gray-300 mb-4">
+          Our team is ready to help you find the perfect plan for your needs.
+        </p>
+        <a 
+          href="mailto:support@thepick.ai" 
+          className="inline-flex items-center text-orange-500 hover:text-orange-600"
+        >
+          Contact us at support@thepick.ai
+        </a>
+      </div>
+    </MarketingPageLayout>
   );
 }
