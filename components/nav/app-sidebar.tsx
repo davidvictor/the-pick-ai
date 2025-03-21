@@ -145,7 +145,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" >
-              <a href="#" className='logo dark:logo-dark'></a>
+              <a href={ROUTES.DASHBOARD} className='logo dark:logo-dark'></a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
