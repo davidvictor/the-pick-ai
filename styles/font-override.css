@@ -1,0 +1,8 @@
+/* Override Tailwind's default font fallbacks */
+html, body {
+  font-family: var(--font-geist-sans) !important;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-geist-mono) !important;
+}

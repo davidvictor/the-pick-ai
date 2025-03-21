@@ -1,0 +1,55 @@
+/* Marquee container */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  --gap: 1rem;
+  --duration: 120s; /* Default duration, will be overridden by inline style */
+  display: flex;
+  user-select: none;
+  gap: var(--gap);
+  height: 30px;
+}
+
+.even-row, .odd-row {
+  opacity: 0.2;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Marquee content container */
+.marquee__content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  min-width: 100%;
+  gap: var(--gap);
+  font-size: 14px;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+/* Betting item */
+.betting-item {
+  display: inline-block;
+  padding: 0 10px;
+}
+
+/* Animation for even rows (right to left) */
+@keyframes scroll-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+}
+
+/* Animation for odd rows (left to right) */
+@keyframes scroll-left {
+  from { transform: translateX(calc(-100% - var(--gap))); }
+  to { transform: translateX(0); }
+}
+
+/* Apply animations with custom duration */
+.even-row .marquee__content {
+  animation: scroll-right var(--duration) linear infinite;
+}
+
+.odd-row .marquee__content {
+  animation: scroll-left var(--duration) linear infinite;
+}

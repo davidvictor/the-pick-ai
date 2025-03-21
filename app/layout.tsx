@@ -1,19 +1,50 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
-import { Manrope } from 'next/font/google';
+import { Geist, Geist_Mono } from "next/font/google";
 import { UserProvider } from '@/lib/auth';
 import { getUser } from '@/lib/db/queries';
+import "../styles/font-override.css";
+import "../styles/markdown.css";
+import "../styles/custom.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'Next.js SaaS Starter',
-  description: 'Get started quickly with Next.js, Postgres, and Stripe.',
+  title: "The Pick",
+  description: "AI powerered bets that win",
+  openGraph: {
+    title: "The Pick – AI-Powered Sports Betting Predictions",
+    description:
+      "Harness the power of AI to elevate your betting strategy. The Pick delivers cutting-edge, data-backed predictions for smarter sports wagering.",
+    url: "https://thepick.ai",
+    siteName: "The Pick",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Pick – AI-Powered Sports Betting Predictions",
+    description: "Experience data-driven sports betting insights and winning predictions powered by advanced AI. Bet smarter with The Pick.",
+    images: "/og-image.png",
+  },
 };
 
 export const viewport: Viewport = {
   maximumScale: 1,
 };
-
-const manrope = Manrope({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,
@@ -25,9 +56,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-[100dvh] bg-gray-50">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <UserProvider userPromise={userPromise}>{children}</UserProvider>
       </body>
     </html>

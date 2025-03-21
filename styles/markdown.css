@@ -1,0 +1,237 @@
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  line-height: 1.25;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content hr {
+  margin: 2rem 0;
+}
+
+/* .markdown-content {
+  color: var(--color-muted);
+} */
+
+/* 
+.markdown-content {
+  width: 100%;
+  max-width: none;
+  overflow-wrap: break-word;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  overflow-x: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.markdown-content table thead {
+  background-color: hsl(var(--color-muted));
+  border-bottom: 2px solid hsl(var(--border));
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  padding: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  text-align: left;
+}
+
+.markdown-content table th {
+  font-weight: 600;
+}
+
+.markdown-content table tr:nth-child(even) {
+  background-color: hsl(var(--muted) / 0.3);
+}
+
+.dark .markdown-content table thead {
+  background-color: hsl(var(--muted) / 0.8);
+}
+
+.dark .markdown-content table tr:nth-child(even) {
+  background-color: hsl(var(--muted) / 0.2);
+}
+
+.markdown-content .table-compact th,
+.markdown-content .table-compact td {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.markdown-content .table-centered th,
+.markdown-content .table-centered td {
+  text-align: center;
+}
+
+.markdown-content .table-highlight-row tr:hover {
+  background-color: hsl(var(--accent) / 0.1);
+}
+
+.markdown-content pre {
+  background-color: hsl(var(--muted));
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+}
+
+.markdown-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875em;
+  background-color: hsl(var(--muted) / 0.5);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid hsl(var(--border));
+  padding-left: 1rem;
+  margin-left: 0;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+.markdown-content a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.markdown-content a:hover {
+  color: hsl(var(--primary) / 0.8);
+}
+
+.markdown-content strong {
+    font-weight: 600;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+}
+
+
+.markdown-content h1 {
+  font-size: 1.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.5rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.25rem;
+}
+
+.markdown-content h4 {
+  font-size: 1.125rem;
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+  margin: 2rem 0;
+}
+
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+}
+
+
+.markdown-content .text-center {
+  text-align: center;
+}
+
+.markdown-content .text-right {
+  text-align: right;
+}
+
+.markdown-content .text-primary {
+  color: hsl(var(--primary));
+}
+
+.markdown-content .text-secondary {
+  color: hsl(var(--secondary));
+}
+
+.markdown-content .text-accent {
+  color: hsl(var(--accent));
+}
+
+.markdown-content .bg-primary {
+  background-color: hsl(var(--primary) / 0.1);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.markdown-content .bg-secondary {
+  background-color: hsl(var(--secondary) / 0.1);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.markdown-content .bg-accent {
+  background-color: hsl(var(--accent) / 0.1);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.markdown-content .border-left {
+  border-left: 4px solid hsl(var(--border));
+  padding-left: 1rem;
+}
+
+.markdown-content .callout {
+  background-color: hsl(var(--muted));
+  border-left: 4px solid hsl(var(--primary));
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.markdown-content .callout-warning {
+  border-left-color: hsl(var(--warning, 38 92% 50%));
+}
+
+.markdown-content .callout-info {
+  border-left-color: hsl(var(--info, 220 70% 50%));
+}
+
+.markdown-content .callout-success {
+  border-left-color: hsl(var(--success, 142 70% 45%));
+} */

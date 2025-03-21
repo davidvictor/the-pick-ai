@@ -1,0 +1,56 @@
+
+
+/* Custom sizing for the team display at symbol */
+
+.at-symbol {
+  position: absolute;
+  left: 50%;
+  scale: 9;
+  opacity: 0.04;
+}
+
+.at-symbol.at-symbol-large {
+  scale: 7;
+  transform: translate(0, -2px);
+}
+
+.dark .at-symbol {
+  opacity: 0.06;
+}
+
+
+/* Custom slow ping animation for game status badge */
+@keyframes slow-ping {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-slow-ping {
+  /* animation: slow-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; */
+  animation: slow-ping 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+
+/* Throb animation for chevron - subtle right movement to draw attention */
+@keyframes throb {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-throb {
+  animation: throb 1.5s ease-in-out infinite;
+}
