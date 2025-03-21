@@ -1,99 +1,120 @@
-"use client";
-
 import { MarketingPageLayout } from '@/components/marketing/page-layout';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Check, Star, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { getStripeProducts, getStripePrices } from '@/lib/payments/stripe';
+import { appConfig } from '@/lib/app-config';
+import { PricingContent } from './pricing-client';
 
-function PricingCard({
-  name,
-  price,
-  interval,
-  trialDays,
-  features,
-  isPremium = false,
-}: {
+// Define interfaces for Stripe data structures
+interface StripeProduct {
+  id: string;
   name: string;
-  price: number;
-  interval: string;
-  trialDays: number;
-  features: string[];
-  isPremium?: boolean;
-}) {
-  return (
-    <Card className={`border overflow-hidden ${isPremium ? 'shadow-md border-primary/20 relative' : 'shadow-sm'}`}>
-      {isPremium && (
-        <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-medium rounded-bl-lg">
-          Popular
-        </div>
-      )}
-      <CardHeader className={`${isPremium ? 'bg-primary/5' : 'bg-muted/10'} pb-6`}>
-        <div className="flex items-center gap-2 mb-1">
-          {isPremium ? <Star className="h-5 w-5 text-primary" /> : <Zap className="h-5 w-5 text-muted-foreground" />}
-          <CardTitle className="text-xl">{name}</CardTitle>
-        </div>
-        <CardDescription>
-          with {trialDays} day free trial
-        </CardDescription>
-        <div className="mt-2">
-          <span className="text-3xl font-bold">${price}</span>
-          <span className="text-muted-foreground ml-1">/ {interval}</span>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <ul className="space-y-3">
-          {features.map((feature, index) => (
-            <li key={index} className="flex items-start">
-              <Check className={`h-4 w-4 ${isPremium ? 'text-primary' : 'text-muted-foreground'} mr-2 mt-0.5 flex-shrink-0`} />
-              <span className="text-sm">{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-      <CardFooter className="pt-2 pb-6">
-        <Button className={`w-full ${isPremium ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''}`}>
-          Get Started
-        </Button>
-      </CardFooter>
-    </Card>
-  );
+  description?: string | null;
+  defaultPriceId?: string;
 }
 
-export default function PricingPage() {
+interface StripePrice {
+  id: string;
+  productId: string;
+  unitAmount: number | null;
+  currency: string;
+  interval?: string;
+  trialPeriodDays?: number | null;
+}
+
+export default async function PricingPage() {
+  // Default values from app config to use as fallbacks
+  const defaultConfig = {
+    basePlan: {
+      name: 'Base Plan',
+      id: appConfig.stripe.products.basicPlanId,
+      description: 'Essential features for casual bettors'
+    } as StripeProduct,
+    plusPlan: {
+      name: 'Premium Plan',
+      id: appConfig.stripe.products.premiumPlanId,
+      description: 'Advanced features for serious bettors'
+    } as StripeProduct,
+    basePrice: {
+      id: appConfig.stripe.prices.basicPriceId,
+      productId: appConfig.stripe.products.basicPlanId,
+      unitAmount: 800, // $8.00
+      currency: 'usd',
+      interval: 'month',
+      trialPeriodDays: 14
+    } as StripePrice,
+    plusPrice: {
+      id: appConfig.stripe.prices.premiumPriceId,
+      productId: appConfig.stripe.products.premiumPlanId,
+      unitAmount: 1200, // $12.00
+      currency: 'usd',
+      interval: 'month',
+      trialPeriodDays: 14
+    } as StripePrice
+  };
+
+  let products: StripeProduct[] = [];
+  let prices: StripePrice[] = [];
+  let basePlan: StripeProduct | undefined;
+  let plusPlan: StripeProduct | undefined;
+  let basePrice: StripePrice | undefined;
+  let plusPrice: StripePrice | undefined;
+
+  try {
+    // Fetch products and prices from Stripe
+    products = await getStripeProducts();
+    prices = await getStripePrices();
+    
+    // Find the specific products based on their IDs in app config
+    // Explicitly assigning to constants first to make TypeScript happy
+    const foundBasePlan = products.find(p => p.id === appConfig.stripe.products.basicPlanId);
+    const foundPlusPlan = products.find(p => p.id === appConfig.stripe.products.premiumPlanId);
+    
+    basePlan = foundBasePlan;
+    plusPlan = foundPlusPlan;
+    
+    // First try to get prices using the default price IDs from the products
+    // If that fails, fall back to the specific price IDs from app config
+    if (foundBasePlan && foundBasePlan.defaultPriceId) {
+      basePrice = prices.find(p => p.id === foundBasePlan.defaultPriceId);
+    }
+    
+    if (!basePrice) {
+      basePrice = prices.find(p => p.id === appConfig.stripe.prices.basicPriceId);
+    }
+    
+    if (foundPlusPlan && foundPlusPlan.defaultPriceId) {
+      plusPrice = prices.find(p => p.id === foundPlusPlan.defaultPriceId);
+    }
+    
+    if (!plusPrice) {
+      plusPrice = prices.find(p => p.id === appConfig.stripe.prices.premiumPriceId);
+    }
+    
+    // Add warnings if products or prices aren't found
+    if (!basePlan || !plusPlan || !basePrice || !plusPrice) {
+      console.warn("Some Stripe products or prices were not found. Check your app-config.ts values.");
+    }
+  } catch (error) {
+    console.error("Error fetching Stripe data:", error);
+    // Use fallback values in case of error
+    basePlan = defaultConfig.basePlan;
+    plusPlan = defaultConfig.plusPlan;
+    basePrice = defaultConfig.basePrice;
+    plusPrice = defaultConfig.plusPrice;
+  }
+  
   return (
     <MarketingPageLayout
       title="Pricing Plans"
       subtitle="Choose the plan that works best for your betting needs. All plans include a free trial."
     >
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <PricingCard
-          name="Base"
-          price={8}
-          interval="month"
-          trialDays={7}
-          features={[
-            'Unlimited Usage',
-            'Unlimited Workspace Members',
-            'Email Support',
-            'Access to Core Features',
-            'Regular Updates'
-          ]}
-        />
-        <PricingCard
-          name="Plus"
-          price={12}
-          interval="month"
-          trialDays={7}
-          features={[
-            'Everything in Base, and:',
-            'Early Access to New Features',
-            '24/7 Priority Support',
-            'Slack Community Access',
-            'Advanced Analytics'
-          ]}
-          isPremium={true}
-        />
-      </div>
+      <PricingContent 
+        products={products}
+        prices={prices}
+        basePlan={basePlan}
+        plusPlan={plusPlan}
+        basePrice={basePrice}
+        plusPrice={plusPrice}
+      />
       
       {/* Additional information section */}
       <div className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-8">

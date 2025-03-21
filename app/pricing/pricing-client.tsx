@@ -16,13 +16,17 @@ function PricingCard({
   isPremium = false,
 }: {
   name: string;
-  price: number;
-  interval: string;
-  trialDays: number;
+  price: number | null | undefined;
+  interval: string | undefined;
+  trialDays: number | null | undefined;
   features: string[];
   priceId?: string;
   isPremium?: boolean;
 }) {
+  // Safe defaults for nullable values
+  const safePrice = price ?? (isPremium ? 1200 : 800);
+  const safeInterval = interval || 'month';
+  const safeTrialDays = trialDays ?? 14;
   return (
     <Card className={`border overflow-hidden ${isPremium ? 'shadow-md border-primary/20 relative' : 'shadow-sm'}`}>
       {isPremium && (
@@ -36,11 +40,11 @@ function PricingCard({
           <CardTitle className="text-xl">{name}</CardTitle>
         </div>
         <CardDescription>
-          with {trialDays} day free trial
+          with {safeTrialDays} day free trial
         </CardDescription>
         <div className="mt-2">
-          <span className="text-3xl font-bold">${price / 100}</span>
-          <span className="text-muted-foreground ml-1">/ {interval}</span>
+          <span className="text-3xl font-bold">${Math.floor(safePrice / 100)}</span>
+          <span className="text-muted-foreground ml-1">/ {safeInterval}</span>
         </div>
       </CardHeader>
       <CardContent className="pt-6">
@@ -63,6 +67,23 @@ function PricingCard({
   );
 }
 
+// Define interfaces to match the server component
+interface StripeProduct {
+  id: string;
+  name: string;
+  description?: string | null;
+  defaultPriceId?: string;
+}
+
+interface StripePrice {
+  id: string;
+  productId: string;
+  unitAmount: number | null;
+  currency: string;
+  interval?: string;
+  trialPeriodDays?: number | null;
+}
+
 // Component that contains the pricing UI
 export function PricingContent({
   products,
@@ -72,13 +93,17 @@ export function PricingContent({
   basePrice,
   plusPrice
 }: {
-  products: any[];
-  prices: any[];
-  basePlan: any;
-  plusPlan: any;
-  basePrice: any;
-  plusPrice: any;
+  products: StripeProduct[];
+  prices: StripePrice[];
+  basePlan?: StripeProduct;
+  plusPlan?: StripeProduct;
+  basePrice?: StripePrice;
+  plusPrice?: StripePrice;
 }) {
+  // Log warning if products or prices are missing
+  if (!basePlan || !plusPlan || !basePrice || !plusPrice) {
+    console.warn('Some Stripe products or prices were not found. Using fallback values.');
+  }
   return (
     <>
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -86,7 +111,7 @@ export function PricingContent({
           name={basePlan?.name || 'Base'}
           price={basePrice?.unitAmount || 800}
           interval={basePrice?.interval || 'month'}
-          trialDays={basePrice?.trialPeriodDays || 7}
+          trialDays={basePrice?.trialPeriodDays || 14}
           features={[
             'Unlimited Usage',
             'Unlimited Workspace Members',
@@ -100,7 +125,7 @@ export function PricingContent({
           name={plusPlan?.name || 'Plus'}
           price={plusPrice?.unitAmount || 1200}
           interval={plusPrice?.interval || 'month'}
-          trialDays={plusPrice?.trialPeriodDays || 7}
+          trialDays={plusPrice?.trialPeriodDays || 14}
           features={[
             'Everything in Base, and:',
             'Early Access to New Features',
