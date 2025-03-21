@@ -348,6 +348,11 @@ const removeTeamMemberSchema = z.object({
 export const removeTeamMember = validatedActionWithUser(
   removeTeamMemberSchema,
   async (data, _, user) => {
+    // Guard: Disable team management functionality
+    return { error: 'Team management is disabled' };
+    
+    // Original code is unreachable but kept for reference
+    /*
     const { memberId } = data;
     const userWithTeam = await getUserWithTeam(user.id);
 
@@ -371,6 +376,7 @@ export const removeTeamMember = validatedActionWithUser(
     );
 
     return { success: 'Team member removed successfully' };
+    */
   },
 );
 
@@ -382,6 +388,11 @@ const inviteTeamMemberSchema = z.object({
 export const inviteTeamMember = validatedActionWithUser(
   inviteTeamMemberSchema,
   async (data, _, user) => {
+    // Guard: Disable team invitation functionality
+    return { error: 'Team invitations are disabled' };
+    
+    // Original code is unreachable but kept for reference
+    /*
     const { email, role } = data;
     const userWithTeam = await getUserWithTeam(user.id);
 
@@ -441,5 +452,6 @@ export const inviteTeamMember = validatedActionWithUser(
     // await sendInvitationEmail(email, userWithTeam.team.name, role)
 
     return { success: 'Invitation sent successfully' };
+    */
   },
 );
