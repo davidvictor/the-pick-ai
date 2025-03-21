@@ -1,6 +1,6 @@
 "use client";
 
-import { MarketingPageLayout } from '@/components/marketing/page-layout';
+import { MarketingPageContent } from '@/components/marketing/page-content';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,7 @@ export default function ContactPage() {
   };
 
   return (
-    <MarketingPageLayout
+    <MarketingPageContent
       title="Contact Us"
       subtitle="Have questions or feedback? We'd love to hear from you!"
     >
@@ -243,6 +243,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </MarketingPageLayout>
+    </MarketingPageContent>
   );
 }

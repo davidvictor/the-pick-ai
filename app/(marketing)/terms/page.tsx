@@ -1,10 +1,10 @@
 "use client";
 
-import { MarketingPageLayout } from '@/components/marketing/page-layout';
+import { MarketingPageContent } from '@/components/marketing/page-content';
 
 export default function TermsPage() {
   return (
-    <MarketingPageLayout
+    <MarketingPageContent
       title="Terms of Service"
       subtitle="Last updated: March 2025"
     >
@@ -145,6 +145,6 @@ export default function TermsPage() {
           (800) 555-5555
         </address>
       </section>
-    </MarketingPageLayout>
+    </MarketingPageContent>
   );
 }

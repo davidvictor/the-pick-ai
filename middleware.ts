@@ -2,8 +2,17 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyToken } from '@/lib/auth/session';
 
-// Define pattern for protected routes
-const PROTECTED_ROUTES = /^\/app\/.*/;
+// Route group aware approach to protected routes
+const isProtectedRoute = (pathname: string): boolean => {
+  // Dashboard route group is protected
+  if (pathname.startsWith('/app/')) return true;
+  
+  // Any additional protected routes that aren't in the dashboard group
+  // For example, if we have specific (marketing) routes that require auth:
+  // if (pathname === '/pricing/enterprise') return true;
+  
+  return false;
+};
 
 // Public files pattern (don't check auth for static assets)
 const PUBLIC_FILE = /\.(.*)$/;
@@ -52,56 +61,75 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/app/ui-kit', request.url));
     }
     
+    // Redirect legacy sign-in/sign-up paths to the auth route group
+    if (pathname === '/sign-in' || pathname === '/sign-up') {
+      const mode = pathname === '/sign-in' ? 'signin' : 'signup';
+      const url = new URL('/auth', request.url);
+      url.searchParams.set('mode', mode);
+      
+      // Preserve any query parameters
+      for (const [key, value] of request.nextUrl.searchParams.entries()) {
+        if (key !== 'mode') { // Don't duplicate mode parameter
+          url.searchParams.set(key, value);
+        }
+      }
+      
+      return NextResponse.redirect(url);
+    }
+    
+    // Redirect history path to marketing route group
+    if (pathname === '/history') {
+      return NextResponse.redirect(new URL('/history', request.url));
+    }
+    
     // Create a base response that we'll modify as needed
     const response = NextResponse.next();
     
-    // Authentication check for protected routes
-    if (PROTECTED_ROUTES.test(pathname)) {
+    // Default auth state (not authenticated)
+    let authState: {
+      isAuthenticated: boolean;
+      userId: number | null;
+    } = {
+      isAuthenticated: false,
+      userId: null
+    };
+    
+    // Get session cookie regardless of route
+    const sessionCookie = request.cookies.get('session')?.value;
+    let session = null;
+    let userId = null;
+    
+    if (sessionCookie) {
       try {
-        // Get session directly from the request cookies (Edge runtime)
-        const sessionCookie = request.cookies.get('session')?.value;
+        // Verify the session token
+        session = await verifyToken(sessionCookie);
+        userId = session?.user?.id;
         
-        let session = null;
-        let userId = null;
-        
-        if (sessionCookie) {
-          // Verify the session token
-          try {
-            session = await verifyToken(sessionCookie);
-            userId = session?.user?.id;
-          } catch (tokenError) {
-            console.error('Token verification error:', tokenError);
-          }
-        }
-        
-        if (!session) {
-          // Create a login URL with return path
-          const url = new URL('/sign-in', request.url);
-          url.searchParams.set('returnTo', request.nextUrl.pathname);
-          return NextResponse.redirect(url);
-        }
-        
-        // Set auth state in response headers to be read by server components
-        // This avoids cookie reading during static generation
         if (session) {
-          response.headers.set(AUTH_STATE_HEADER, JSON.stringify({
+          // Update auth state if we have a valid session
+          authState = {
             isAuthenticated: true,
-            userId: userId
-          }));
+            userId
+          };
         }
-      } catch (error) {
-        console.error('Authentication error in middleware:', error);
-        // Redirect to login on auth error
-        const url = new URL('/sign-in', request.url);
-        return NextResponse.redirect(url);
+      } catch (tokenError) {
+        console.error('Token verification error:', tokenError);
+        // Don't throw - just continue with unauthenticated state
       }
-    } else {
-      // For non-protected routes, still set auth header but with isAuthenticated: false
-      response.headers.set(AUTH_STATE_HEADER, JSON.stringify({
-        isAuthenticated: false,
-        userId: null
-      }));
     }
+    
+    // For protected routes, check authentication and redirect if needed
+    if (isProtectedRoute(pathname) && !session) {
+      // Create a login URL with return path - using auth route group
+      const url = new URL('/auth', request.url);
+      url.searchParams.set('mode', 'signin');
+      url.searchParams.set('returnTo', request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
+    
+    // Always set auth state in headers for all routes
+    // This makes it available to all route groups for conditional UI
+    response.headers.set(AUTH_STATE_HEADER, JSON.stringify(authState));
     
     return response;
   } catch (error) {
@@ -112,15 +140,29 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Specify which paths this middleware should run on
+  // Specify which paths this middleware should run on - organized by route groups
   matcher: [
-    // Route group patterns
-    '/leagues/:path*',
+    // Route groups and their paths
+    '/(marketing)/:path*',  // Marketing routes may need auth state for personalization
+    '/(auth)/:path*',       // Auth routes for login and signup
+    '/(dashboard)/:path*',  // Dashboard routes (all protected)
+    
+    // Primary app pages
     '/app/:path*',
+    '/sign-in',
+    '/sign-up',
+    '/auth',
+    
+    // Legacy redirects
     '/authenticated/:path*',
     '/dashboard',
     '/dashboard/:path*',
+    '/leagues/:path*',
     '/ui-kit',
-    '/contact'  // Add contact page to middleware protection
+    
+    // Legacy sign-in/up paths that should redirect to auth route group
+    '/sign-in',
+    '/sign-up',
+    '/history'
   ],
 };

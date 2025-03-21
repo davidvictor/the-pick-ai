@@ -1,6 +1,6 @@
 "use client";
 
-import { MarketingPageLayout } from '@/components/marketing/page-layout';
+import { MarketingPageContent } from '@/components/marketing/page-content';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 
@@ -28,7 +28,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <MarketingPageLayout
+    <MarketingPageContent
       title="About The Pick"
       subtitle="Revolutionizing sports betting through AI and data science"
     >
@@ -158,6 +158,6 @@ export default function AboutPage() {
           </button>
         </div>
       </div>
-    </MarketingPageLayout>
+    </MarketingPageContent>
   );
 }

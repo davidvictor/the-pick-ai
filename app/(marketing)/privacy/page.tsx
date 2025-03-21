@@ -1,10 +1,10 @@
 "use client";
 
-import { MarketingPageLayout } from '@/components/marketing/page-layout';
+import { MarketingPageContent } from '@/components/marketing/page-content';
 
 export default function PrivacyPage() {
   return (
-    <MarketingPageLayout
+    <MarketingPageContent
       title="Privacy Policy"
       subtitle="Last updated: March 2025"
     >
@@ -124,6 +124,6 @@ export default function PrivacyPage() {
           (800) 555-5555
         </address>
       </section>
-    </MarketingPageLayout>
+    </MarketingPageContent>
   );
 }

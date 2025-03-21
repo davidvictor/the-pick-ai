@@ -1,4 +1,4 @@
-import { MarketingPageLayout } from '@/components/marketing/page-layout';
+import { MarketingPageContent } from '@/components/marketing/page-content';
 import { getStripeProducts, getStripePrices } from '@/lib/payments/stripe';
 import { appConfig } from '@/lib/app-config';
 import { PricingContent } from './pricing-client';
@@ -105,7 +105,7 @@ async function PricingPage() {
   }
   
   return (
-    <MarketingPageLayout
+    <MarketingPageContent
       title="Pricing Plans"
       subtitle="Choose the plan that works best for your betting needs. All plans include a free trial."
     >
@@ -167,7 +167,7 @@ async function PricingPage() {
           Contact us at support@thepick.ai
         </a>
       </div>
-    </MarketingPageLayout>
+    </MarketingPageContent>
   );
 }
 

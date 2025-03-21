@@ -2,9 +2,10 @@
 
 import { Suspense } from 'react';
 import { withDynamicRendering } from '@/lib/hoc/with-dynamic-rendering';
+import AnimatedBackground from '@/components/ui/animated-background';
 
 /**
- * Layout wrapper for auth page 
+ * Layout wrapper for auth pages 
  * Provides suspense boundary for useSearchParams() and applies dynamic rendering
  */
 function AuthLayout({ 
@@ -18,7 +19,11 @@ function AuthLayout({
         <p className="text-muted-foreground">Loading...</p>
       </div>
     }>
-      {children}
+      <div className="min-h-[100dvh] flex flex-col relative">
+        {/* Animated Background */}
+        <AnimatedBackground />
+        {children}
+      </div>
     </Suspense>
   );
 }
