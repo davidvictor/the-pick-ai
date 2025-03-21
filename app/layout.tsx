@@ -2,6 +2,8 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import { UserProvider } from '@/lib/auth';
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+//import type { ThemeProviderProps } from "next-themes";
 import { getUser } from '@/lib/db/queries';
 import "../styles/font-override.css";
 import "../styles/markdown.css";
@@ -57,9 +59,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <UserProvider userPromise={userPromise}>{children}</UserProvider>
+        <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+          <UserProvider userPromise={userPromise}>{children}</UserProvider>
+        </NextThemesProvider>
       </body>
     </html>
   );
