@@ -100,7 +100,7 @@ export function AppPreview() {
                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">KC</div>
                     <div className="text-sm font-semibold text-gray-900 dark:text-white">Chiefs</div>
                   </Card>
-                  <Card className="p-4 bg-gray-300 dark:bg-gray-800 border-0 w-[45%] flex flex-col items-center border-orange-500 border-2">
+                  <Card className="p-4 bg-gray-300 dark:bg-gray-800 border-none w-[45%] flex flex-col items-center border-orange-500 border-2">
                     <div className="w-16 h-16 relative mb-2">
                       <Image 
                         src="/logos/nfl/la-rams.svg" 
