@@ -23,12 +23,12 @@ export function TopPicks({ className }: TopPicksProps) {
       homeTeam: {
         name: "Chiefs",
         city: "Kansas City",
-        logo: "/logos/nfl/kansas-city-chiefs-default.svg",
+        logo: "/logos/nfl/kansas-city-chiefs.svg",
       },
       awayTeam: {
         name: "Ravens",
         city: "Baltimore",
-        logo: "/logos/nfl/baltimore-ravens-default.svg",
+        logo: "/logos/nfl/baltimore-ravens.svg",
       },
       date: "Mar 21, 2025",
       time: "8:20 PM",
@@ -65,12 +65,12 @@ export function TopPicks({ className }: TopPicksProps) {
       homeTeam: {
         name: "Bruins",
         city: "Boston",
-        logo: "/logos/nhl/boston-bruins-default.svg",
+        logo: "/logos/nhl/boston-bruins.svg",
       },
       awayTeam: {
         name: "Maple Leafs",
         city: "Toronto",
-        logo: "/logos/nhl/toronto-maple-leafs-default.svg",
+        logo: "/logos/nhl/toronto-maple-leafs.svg",
       },
       date: "Mar 21, 2025",
       time: "7:00 PM",
