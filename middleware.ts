@@ -8,6 +8,9 @@ const PROTECTED_ROUTES = /^\/app\/.*/;
 // Public files pattern (don't check auth for static assets)
 const PUBLIC_FILE = /\.(.*)$/;
 
+// Auth state header for passing to server components
+const AUTH_STATE_HEADER = 'x-auth-state';
+
 /**
  * Middleware for handling authentication and redirects
  * This runs at the edge before any page or layout code
@@ -49,19 +52,23 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/app/ui-kit', request.url));
     }
     
+    // Create a base response that we'll modify as needed
+    const response = NextResponse.next();
+    
     // Authentication check for protected routes
     if (PROTECTED_ROUTES.test(pathname)) {
       try {
         // Get session directly from the request cookies (Edge runtime)
-        // Note: In middleware we use request.cookies which doesn't need awaiting
-        // This is different from the cookies() function in server components
         const sessionCookie = request.cookies.get('session')?.value;
         
         let session = null;
+        let userId = null;
+        
         if (sessionCookie) {
           // Verify the session token
           try {
             session = await verifyToken(sessionCookie);
+            userId = session?.user?.id;
           } catch (tokenError) {
             console.error('Token verification error:', tokenError);
           }
@@ -73,15 +80,30 @@ export async function middleware(request: NextRequest) {
           url.searchParams.set('returnTo', request.nextUrl.pathname);
           return NextResponse.redirect(url);
         }
+        
+        // Set auth state in response headers to be read by server components
+        // This avoids cookie reading during static generation
+        if (session) {
+          response.headers.set(AUTH_STATE_HEADER, JSON.stringify({
+            isAuthenticated: true,
+            userId: userId
+          }));
+        }
       } catch (error) {
         console.error('Authentication error in middleware:', error);
         // Redirect to login on auth error
         const url = new URL('/sign-in', request.url);
         return NextResponse.redirect(url);
       }
+    } else {
+      // For non-protected routes, still set auth header but with isAuthenticated: false
+      response.headers.set(AUTH_STATE_HEADER, JSON.stringify({
+        isAuthenticated: false,
+        userId: null
+      }));
     }
     
-    return NextResponse.next();
+    return response;
   } catch (error) {
     console.error('Unhandled middleware error:', error);
     // Fallback - allow the request to continue to be handled by the app
@@ -98,6 +120,7 @@ export const config = {
     '/authenticated/:path*',
     '/dashboard',
     '/dashboard/:path*',
-    '/ui-kit'
+    '/ui-kit',
+    '/contact'  // Add contact page to middleware protection
   ],
 };

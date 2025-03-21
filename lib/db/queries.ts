@@ -61,31 +61,28 @@ export async function updateUserSubscription(
 /**
  * Get the currently authenticated user using App Router methods
  * FOR USE IN SERVER COMPONENTS ONLY (app/ directory)
+ * 
+ * This updated version uses header-based authentication state instead of cookies
+ * which avoids static generation issues during build
  */
 export async function getUserForAppRouter() {
   try {
-    // Dynamically import cookies from next/headers
-    const { cookies } = await import('next/headers');
-    const cookiesStore = await cookies();
+    // Import the getAuthenticatedUserId function that uses headers instead of cookies
+    const { getAuthenticatedUserId } = await import('@/lib/auth/headers');
     
-    const sessionCookie = cookiesStore.get('session');
-    if (!sessionCookie || !sessionCookie.value) {
+    // Get authenticated user ID from headers (set by middleware)
+    const userId = getAuthenticatedUserId();
+    
+    // If no user ID in headers, not authenticated
+    if (!userId) {
       return null;
     }
 
-    const sessionData = await verifyToken(sessionCookie.value);
-    
-    if (!sessionData || 
-        !sessionData.user || 
-        typeof sessionData.user.id !== 'number' ||
-        new Date(sessionData.expires) < new Date()) {
-      return null;
-    }
-
+    // Query user database with the authenticated user ID
     const user = await db
       .select()
       .from(users)
-      .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
+      .where(and(eq(users.id, userId), isNull(users.deletedAt)))
       .limit(1);
 
     if (user.length === 0) {
@@ -95,7 +92,8 @@ export async function getUserForAppRouter() {
     return user[0];
   } catch (error) {
     console.error('Error in getUserForAppRouter:', error);
-    throw new Error('getUserForAppRouter must only be used in Server Components in app/ directory');
+    // Return null instead of throwing to avoid crashing static generation
+    return null;
   }
 }
 

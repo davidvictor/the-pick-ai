@@ -1,24 +1,26 @@
 import { redirect } from 'next/navigation';
-import { getAppRouterSession } from './session';
+import { isAuthenticated } from './headers';
 
 /**
- * Protects server components by checking for a valid session.
- * If no valid session is found, redirects to the login page.
+ * Protects server components by checking for authentication using headers.
+ * This approach avoids cookie access during SSG/prerendering.
+ * If not authenticated, redirects to the login page.
  * 
  * IMPORTANT: This function is for use in Server Components only (app/ directory).
  * It will not work in the pages/ directory.
  * 
  * @param options Optional configuration for protection behavior
- * @returns The session object if authenticated
  */
-export async function protectServerPage(options?: { 
+export function protectServerPage(options?: { 
   redirectTo?: string, 
   returnTo?: string
 }) {
   try {
-    const session = await getAppRouterSession();
+    // Get auth state from headers (set by middleware) rather than cookies
+    // This avoids issues with cookie access during static generation
+    const authenticated = isAuthenticated();
     
-    if (!session) {
+    if (!authenticated) {
       // Default to sign-in, but allow custom redirect destination
       const redirectPath = options?.redirectTo || '/sign-in';
       
@@ -30,7 +32,8 @@ export async function protectServerPage(options?: {
       redirect(redirectUrl);
     }
     
-    return session;
+    // No longer return a session object since we're not using cookies
+    return { isAuthenticated: true };
   } catch (error) {
     console.error('Protection error:', error);
     // Still redirect on error for security

@@ -3,8 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import { UserProvider } from '@/lib/auth';
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-//import type { ThemeProviderProps } from "next-themes";
-import { getUserForAppRouter } from '@/lib/db/queries';
+import HomeLayoutWrapper from './layout-wrapper';
 import "../styles/font-override.css";
 import "../styles/markdown.css";
 import "../styles/marquee.css";
@@ -23,6 +22,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "The Pick",
   description: "AI powerered bets that win",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
   openGraph: {
     title: "The Pick – AI-Powered Sports Betting Predictions",
     description:
@@ -49,12 +49,15 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
+// Apply our dynamic rendering wrapper to the RootLayout
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  let userPromise = getUserForAppRouter();
+  // Use a null Promise for userPromise - components that need auth
+  // will get it from our auth context which uses headers
+  const userPromise = Promise.resolve(null);
 
   return (
     <html
@@ -64,7 +67,11 @@ export default function RootLayout({
     >
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
-          <UserProvider userPromise={userPromise}>{children}</UserProvider>
+          <UserProvider userPromise={userPromise}>
+            <HomeLayoutWrapper>
+              {children}
+            </HomeLayoutWrapper>
+          </UserProvider>
         </NextThemesProvider>
       </body>
     </html>

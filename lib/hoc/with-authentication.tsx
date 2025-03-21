@@ -10,8 +10,8 @@ type ComponentProps = {
  * Higher-Order Component that protects a page or layout with authentication
  * and applies dynamic rendering.
  * 
- * This HOC combines authentication checks with the dynamic rendering directive
- * to ensure protected pages can access cookies properly.
+ * This HOC uses header-based authentication check instead of cookie-based checks,
+ * which allows it to work properly during static site generation.
  * 
  * @example
  * // In a page component:
@@ -32,9 +32,10 @@ export function withAuthentication(
   options?: { redirectTo?: string; returnTo?: string }
 ) {
   // Create the authenticated wrapper component
-  async function AuthenticatedComponent(props: ComponentProps) {
+  function AuthenticatedComponent(props: ComponentProps) {
     // This will redirect if not authenticated
-    await protectServerPage(options);
+    // Now synchronous since it uses headers instead of async cookie checks
+    protectServerPage(options);
     
     // If we're here, user is authenticated
     return <Component {...props} />;
@@ -43,6 +44,7 @@ export function withAuthentication(
   // Name the component for better debugging
   AuthenticatedComponent.displayName = `Authenticated(${Component.displayName || Component.name || 'Component'})`;
   
-  // Apply dynamic rendering to ensure cookies work
+  // We still need dynamic rendering because we access headers
+  // Headers are only available during request time, not build time
   return withDynamicRendering(AuthenticatedComponent);
 }

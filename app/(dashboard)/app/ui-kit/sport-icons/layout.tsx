@@ -1,10 +1,10 @@
 import { withDynamicRendering } from '@/lib/hoc/with-dynamic-rendering';
 
 /**
- * Layout wrapper for UI Kit page
+ * Layout wrapper for UI Kit sport icons page
  * Applies dynamic rendering to prevent static generation issues
  */
-function UIKitLayout({ 
+function SportIconsLayout({ 
   children 
 }: { 
   children: React.ReactNode 
@@ -14,4 +14,4 @@ function UIKitLayout({
 
 // Apply dynamic rendering to ensure the page doesn't try to access
 // headers or cookies during static generation
-export default withDynamicRendering(UIKitLayout);
+export default withDynamicRendering(SportIconsLayout);
