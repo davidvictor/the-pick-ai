@@ -115,7 +115,7 @@ const data = {
     },
     {
       title: "UI Kit",
-      url: "/ui-kit",
+      url: ROUTES.UI_KIT,
       icon: Palette,
     },
   ],

@@ -82,7 +82,7 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
     return createCheckoutSession({ user: foundUser, priceId });
   }
 
-  redirect('/dashboard');
+  redirect('/app');
 });
 
 const signUpSchema = z.object({
@@ -137,7 +137,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     return createCheckoutSession({ user: createdUser, priceId });
   }
 
-  redirect('/dashboard');
+  redirect('/app');
 });
 
 export async function signOut() {

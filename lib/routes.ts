@@ -2,15 +2,16 @@ import { League } from '@/services/api-types';
 import { getLeagueDisplayName } from '@/lib/utils';
 
 export const ROUTES = {
-  DASHBOARD: '/dashboard',
+  DASHBOARD: '/app',
   LEAGUES: {
-    INDEX: '/leagues',
-    DETAIL: (league: League) => `/leagues/${league}`,
-    GAME: (league: League, gameId: string) => `/leagues/${league}/games/${gameId}`,
+    INDEX: '/app/leagues',
+    DETAIL: (league: League) => `/app/leagues/${league}`,
+    GAME: (league: League, gameId: string) => `/app/leagues/${league}/games/${gameId}`,
   },
-  HISTORY: '/dashboard/history',
-  ACCOUNT: '/dashboard/account',
-  BEST_BETS: '/dashboard/best-bets',
+  HISTORY: '/app/history',
+  ACCOUNT: '/app/account',
+  BEST_BETS: '/app/best-bets',
+  UI_KIT: '/app/ui-kit',
   // Add other routes as needed
 };
 
@@ -32,6 +33,7 @@ export const BREADCRUMBS = {
     })
   },
   HISTORY: { label: 'History', href: ROUTES.HISTORY, isCurrentPage: true },
+  UI_KIT: { label: 'UI Kit', href: ROUTES.UI_KIT, isCurrentPage: true },
   // Add other breadcrumbs as needed
 };
 
@@ -42,7 +44,7 @@ export function getBreadcrumbsForRoute(pathname: string, params?: Record<string,
   }
   
   // League-specific breadcrumbs
-  if (pathname.startsWith('/leagues') || pathname.includes('/dashboard/leagues')) {
+  if (pathname.startsWith('/leagues') || pathname.includes('/app/leagues')) {
     const league = params?.league as League;
     
     if (league) {
@@ -77,6 +79,14 @@ export function getBreadcrumbsForRoute(pathname: string, params?: Record<string,
     return [
       { ...BREADCRUMBS.DASHBOARD, href: ROUTES.DASHBOARD },
       BREADCRUMBS.HISTORY
+    ];
+  }
+  
+  // UI Kit page
+  if (pathname.includes('/ui-kit')) {
+    return [
+      { ...BREADCRUMBS.DASHBOARD, href: ROUTES.DASHBOARD },
+      BREADCRUMBS.UI_KIT
     ];
   }
   

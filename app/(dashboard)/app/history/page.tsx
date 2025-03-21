@@ -1,10 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AppSidebar } from "@/components/nav/app-sidebar"
-import { AppHeader } from "@/components/ui/app-header"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { SidebarContent } from "@/components/ui/sidebar-content"
 import { BetHistoryTable } from "@/components/history/bet-history-table"
 import { BetHistoryCardList } from "@/components/history/bet-history-card"
 import { BetHistoryFilters, BetHistoryFilters as BetHistoryFiltersType } from "@/components/history/bet-history-filters"
@@ -137,57 +133,48 @@ export default function HistoryPage() {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarContent>
-        <AppHeader
-          breadcrumbItems={[
-            { label: "Betting History", isCurrentPage: true }
-          ]}
-        />
-        
-        {loading ? (
-          <BetHistoryPageSkeleton />
-        ) : (
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <div className="mb-4">
-              <h1 className="text-2xl font-bold">Betting History</h1>
-              <p className="text-muted-foreground">
-                Track your betting performance and history
-              </p>
-            </div>
-            
-            {/* Summary Cards */}
-            <BetHistorySummary summaryData={summaryData} />
-            
-            {/* Filters */}
-            <BetHistoryFilters onFilterChange={setFilters} />
-            
-            {/* Bet History Table/Cards */}
-            {filteredBets.length === 0 ? (
-              <div className="flex items-center justify-center h-40 bg-muted/30 rounded-lg">
-                <div className="text-lg text-muted-foreground">No bets match your filters</div>
-              </div>
-            ) : isMobile ? (
-              <BetHistoryCardList 
-                bets={paginatedBets}
-                currentPage={currentPage}
-                pageSize={pageSize}
-                totalItems={filteredBets.length}
-                onPageChange={handlePageChange}
-              />
-            ) : (
-              <BetHistoryTable 
-                bets={paginatedBets}
-                currentPage={currentPage}
-                pageSize={pageSize}
-                totalItems={filteredBets.length}
-                onPageChange={handlePageChange}
-              />
-            )}
+    <>
+      {loading ? (
+        <BetHistoryPageSkeleton />
+      ) : (
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold">Betting History</h1>
+            <p className="text-muted-foreground">
+              Track your betting performance and history
+            </p>
           </div>
-        )}
-      </SidebarContent>
-    </SidebarProvider>
+          
+          {/* Summary Cards */}
+          <BetHistorySummary summaryData={summaryData} />
+          
+          {/* Filters */}
+          <BetHistoryFilters onFilterChange={setFilters} />
+          
+          {/* Bet History Table/Cards */}
+          {filteredBets.length === 0 ? (
+            <div className="flex items-center justify-center h-40 bg-muted/30 rounded-lg">
+              <div className="text-lg text-muted-foreground">No bets match your filters</div>
+            </div>
+          ) : isMobile ? (
+            <BetHistoryCardList 
+              bets={paginatedBets}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              totalItems={filteredBets.length}
+              onPageChange={handlePageChange}
+            />
+          ) : (
+            <BetHistoryTable 
+              bets={paginatedBets}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              totalItems={filteredBets.length}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </div>
+      )}
+    </>
   )
 }

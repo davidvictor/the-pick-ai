@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Users, Settings, Shield, Activity, Menu } from 'lucide-react';
 
-export default function DashboardLayout({
+export default function AccountLayoutClient({
   children,
 }: {
   children: React.ReactNode;
