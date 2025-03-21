@@ -21,10 +21,6 @@ const iconMap: Record<ActivityType, LucideIcon> = {
   [ActivityType.UPDATE_PASSWORD]: Lock,
   [ActivityType.DELETE_ACCOUNT]: UserMinus,
   [ActivityType.UPDATE_ACCOUNT]: Settings,
-  [ActivityType.CREATE_TEAM]: UserPlus,
-  [ActivityType.REMOVE_TEAM_MEMBER]: UserMinus,
-  [ActivityType.INVITE_TEAM_MEMBER]: Mail,
-  [ActivityType.ACCEPT_INVITATION]: CheckCircle,
 };
 
 function getRelativeTime(date: Date) {
@@ -55,13 +51,6 @@ function formatAction(action: ActivityType): string {
       return 'You deleted your account';
     case ActivityType.UPDATE_ACCOUNT:
       return 'You updated your account';
-    case ActivityType.CREATE_TEAM:
-      return 'Your account was created';
-    // Hide team management related activities or show a generic message
-    case ActivityType.REMOVE_TEAM_MEMBER:
-    case ActivityType.INVITE_TEAM_MEMBER:
-    case ActivityType.ACCEPT_INVITATION:
-      return 'Account activity';
     default:
       return 'Unknown action occurred';
   }

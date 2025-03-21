@@ -10,6 +10,7 @@ This directory contains planning documents for integrating the `frontend-temp` f
 | [Action Items](./action-items.md) | Detailed checklist of specific tasks for each integration step |
 | [Component Mapping](./component-mapping.md) | Mapping of components between projects and their new locations |
 | [Risks and Mitigations](./risks-and-mitigations.md) | Analysis of potential risks and strategies to address them |
+| [Team Removal Completed](./team-removal-completed.md) | Documentation of the completed removal of team functionality |
 
 ## Integration Overview
 
