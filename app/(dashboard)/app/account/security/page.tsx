@@ -2,9 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Lock, Trash2, Loader2 } from 'lucide-react';
+import { AlertTriangle, Lock, KeyRound, ShieldAlert, Trash2, Loader2 } from 'lucide-react';
 import { startTransition, useActionState } from 'react';
 import { updatePassword, deleteAccount } from '@/app/(login)/actions';
 
@@ -50,60 +50,84 @@ export default function SecurityPage() {
   };
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium bold text-gray-900 mb-6">
-        Security Settings
-      </h1>
-      <Card className="mb-8">
+    <div className="space-y-6">
+      <Card className="border shadow-sm">
         <CardHeader>
-          <CardTitle>Password</CardTitle>
+          <div className="flex items-center gap-2">
+            <ShieldAlert className="h-5 w-5 text-muted-foreground" />
+            <CardTitle>Password</CardTitle>
+          </div>
+          <CardDescription>
+            Update your password to maintain account security
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form className="space-y-4" onSubmit={handlePasswordSubmit}>
-            <div>
-              <Label htmlFor="current-password">Current Password</Label>
-              <Input
-                id="current-password"
-                name="currentPassword"
-                type="password"
-                autoComplete="current-password"
-                required
-                minLength={8}
-                maxLength={100}
-              />
+        <form onSubmit={handlePasswordSubmit}>
+          <CardContent className="space-y-4">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="current-password" className="flex items-center gap-2">
+                  <KeyRound className="h-4 w-4 text-muted-foreground" />
+                  Current Password
+                </Label>
+                <Input
+                  id="current-password"
+                  name="currentPassword"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  minLength={8}
+                  maxLength={100}
+                  className="w-full"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="new-password" className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-muted-foreground" />
+                  New Password
+                </Label>
+                <Input
+                  id="new-password"
+                  name="newPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  minLength={8}
+                  maxLength={100}
+                  className="w-full"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password" className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-muted-foreground" />
+                  Confirm New Password
+                </Label>
+                <Input
+                  id="confirm-password"
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  minLength={8}
+                  maxLength={100}
+                  className="w-full"
+                />
+              </div>
             </div>
+          </CardContent>
+          
+          <CardFooter className="flex items-center justify-between border-t bg-muted/10 px-6 py-4">
             <div>
-              <Label htmlFor="new-password">New Password</Label>
-              <Input
-                id="new-password"
-                name="newPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                minLength={8}
-                maxLength={100}
-              />
+              {passwordState.error && (
+                <p className="text-destructive text-sm font-medium">{passwordState.error}</p>
+              )}
+              {passwordState.success && (
+                <p className="text-green-600 text-sm font-medium">{passwordState.success}</p>
+              )}
             </div>
-            <div>
-              <Label htmlFor="confirm-password">Confirm New Password</Label>
-              <Input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                required
-                minLength={8}
-                maxLength={100}
-              />
-            </div>
-            {passwordState.error && (
-              <p className="text-red-500 text-sm">{passwordState.error}</p>
-            )}
-            {passwordState.success && (
-              <p className="text-green-500 text-sm">{passwordState.success}</p>
-            )}
             <Button
               type="submit"
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-primary hover:bg-primary/90 text-white"
               disabled={isPasswordPending}
             >
               {isPasswordPending ? (
@@ -118,37 +142,48 @@ export default function SecurityPage() {
                 </>
               )}
             </Button>
-          </form>
-        </CardContent>
+          </CardFooter>
+        </form>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Delete Account</CardTitle>
+      <Card className="border shadow-sm border-destructive/10">
+        <CardHeader className="border-b border-destructive/10">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-destructive" />
+            <CardTitle>Danger Zone</CardTitle>
+          </div>
+          <CardDescription className="text-destructive/70">
+            Once you delete your account, there is no going back. Please be certain.
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-500 mb-4">
-            Account deletion is non-reversable. Please proceed with caution.
-          </p>
-          <form onSubmit={handleDeleteSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="delete-password">Confirm Password</Label>
-              <Input
-                id="delete-password"
-                name="password"
-                type="password"
-                required
-                minLength={8}
-                maxLength={100}
-              />
+        <form onSubmit={handleDeleteSubmit}>
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="delete-password" className="flex items-center gap-2">
+                  <KeyRound className="h-4 w-4 text-muted-foreground" />
+                  Confirm Password
+                </Label>
+                <Input
+                  id="delete-password"
+                  name="password"
+                  type="password"
+                  required
+                  minLength={8}
+                  maxLength={100}
+                  className="w-full"
+                />
+              </div>
+              {deleteState.error && (
+                <p className="text-destructive text-sm font-medium">{deleteState.error}</p>
+              )}
             </div>
-            {deleteState.error && (
-              <p className="text-red-500 text-sm">{deleteState.error}</p>
-            )}
+          </CardContent>
+          <CardFooter className="border-t border-destructive/10 bg-destructive/5 px-6 py-4">
             <Button
               type="submit"
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="ml-auto"
               disabled={isDeletePending}
             >
               {isDeletePending ? (
@@ -163,9 +198,9 @@ export default function SecurityPage() {
                 </>
               )}
             </Button>
-          </form>
-        </CardContent>
+          </CardFooter>
+        </form>
       </Card>
-    </section>
+    </div>
   );
 }

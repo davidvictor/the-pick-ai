@@ -49,11 +49,11 @@ export function NavLeaguesNCAA({
               <SidebarMenuButton 
                 asChild 
                 tooltip={item.title}
-                isActive={pathname === item.url}
+                isActive={pathname.includes(item.url)}
               >
                 <Link 
                   href={item.url}
-                  className={pathname === item.url ? "text-primary" : ""}
+                  className={pathname.includes(item.url) ? "text-primary" : ""}
                 >
                   <item.icon />
                   <span>{item.title}</span>

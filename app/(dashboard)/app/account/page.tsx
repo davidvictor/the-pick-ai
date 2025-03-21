@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
-import { Settings } from './settings';
+import { ROUTES } from '@/lib/routes';
 import { getUser } from '@/lib/db/queries';
 
-export default async function SettingsPage() {
+export default async function AccountPage() {
   const user = await getUser();
 
   if (!user) {
     redirect('/sign-in');
   }
 
-  return <Settings user={user} />;
+  // Redirect to the general account page
+  redirect(ROUTES.ACCOUNT.GENERAL);
 }

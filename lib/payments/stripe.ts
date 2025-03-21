@@ -6,6 +6,7 @@ import {
   getUser,
   updateUserSubscription
 } from '@/lib/db/queries';
+import { appConfig } from '@/lib/app-config';
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia'
@@ -176,4 +177,35 @@ export async function getStripeProducts() {
         ? product.default_price
         : product.default_price?.id
   }));
+}
+
+/**
+ * Initializes Stripe price IDs in the app config
+ * This function fetches current products and their default prices
+ * and updates the app config
+ */
+export async function initializeStripePriceIds() {
+  try {
+    const products = await getStripeProducts();
+    
+    // Find products that match our config
+    const basicProduct = products.find(p => p.id === appConfig.stripe.products.basicPlanId);
+    const premiumProduct = products.find(p => p.id === appConfig.stripe.products.premiumPlanId);
+    
+    // Update price IDs in the config if products are found
+    if (basicProduct?.defaultPriceId) {
+      appConfig.stripe.prices.basicPriceId = basicProduct.defaultPriceId;
+    }
+    
+    if (premiumProduct?.defaultPriceId) {
+      appConfig.stripe.prices.premiumPriceId = premiumProduct.defaultPriceId;
+    }
+    
+    console.log('Stripe price IDs initialized:', {
+      basicPriceId: appConfig.stripe.prices.basicPriceId,
+      premiumPriceId: appConfig.stripe.prices.premiumPriceId
+    });
+  } catch (error) {
+    console.error('Failed to initialize Stripe price IDs:', error);
+  }
 }

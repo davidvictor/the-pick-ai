@@ -3,6 +3,45 @@
  */
 export const appConfig = {
   /**
+   * Stripe payment configuration
+   */
+  stripe: {
+    /**
+     * Product and price IDs for subscription plans
+     * Update these when products change in Stripe dashboard
+     */
+    products: {
+      /**
+       * Basic subscription product ID
+       */
+      basicPlanId: "prod_RyrOLOw8EFSzTN",
+      
+      /**
+       * Premium subscription product ID
+       */
+      premiumPlanId: "prod_RyrO9jCfWmK2IQ"
+    },
+    /**
+     * Price IDs for subscription plans (manually configured)
+     * For direct checkout actions
+     */
+    prices: {
+      /**
+       * Basic subscription default price ID
+       * The actual price ID from Stripe - DO NOT use placeholder names
+       */
+      basicPriceId: "price_1OvyRVGSwrLIvPpQl6uJozfL",
+
+      /**
+       * Premium subscription default price ID
+       * This is used for the "Upgrade to Pro" button
+       * The actual price ID from Stripe - DO NOT use placeholder names
+       */
+      premiumPriceId: "price_1R4tg7GLlAJZMxRMq7yU9k6y"
+    }
+  },
+  
+  /**
    * Footer configuration
    */
   footer: {
@@ -19,7 +58,7 @@ export const appConfig = {
     /**
      * Whether to simulate loading states (useful for development and testing)
      */
-    simulateLoading: true,
+    simulateLoading: false,
     
     /**
      * Default loading time in milliseconds

@@ -110,7 +110,7 @@ const data = {
     },
     {
       title: "Settings",
-      url: ROUTES.ACCOUNT,
+      url: ROUTES.ACCOUNT.INDEX,
       icon: Settings2,
     },
     {

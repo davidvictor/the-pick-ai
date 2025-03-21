@@ -1,6 +1,7 @@
 "use client"
 
-import { use, useState, Suspense, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
+import Link from 'next/link';
 
 import {
   BadgeCheck,
@@ -10,6 +11,10 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react"
+
+import { ROUTES } from '@/lib/routes';
+import { appConfig } from '@/lib/app-config';
+import { checkoutAction } from '@/lib/payments/actions';
 
 import {
   Avatar,
@@ -105,34 +110,49 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
+              <form action={checkoutAction}>
+                <input 
+                  type="hidden" 
+                  name="priceId" 
+                  value={appConfig.stripe.prices.premiumPriceId} 
+                />
+                <DropdownMenuItem asChild>
+                  <button type="submit" className="w-full flex cursor-pointer">
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    <span>Upgrade to Pro</span>
+                  </button>
+                </DropdownMenuItem>
+              </form>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href={ROUTES.ACCOUNT.INDEX} className="flex cursor-pointer">
+                  <BadgeCheck className="mr-2 h-4 w-4" />
+                  <span>Account</span>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
+              <DropdownMenuItem asChild>
+                <Link href={ROUTES.ACCOUNT.BILLING} className="flex cursor-pointer">
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  <span>Billing</span>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem asChild>
+                <Link href={ROUTES.ACCOUNT.NOTIFICATIONS} className="flex cursor-pointer">
+                  <Bell className="mr-2 h-4 w-4" />
+                  <span>Notifications</span>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <form action={handleSignOut} className="w-full">
-              <button type="submit" className="w-full">
-                <DropdownMenuItem>
-                  <LogOut />
-                  Log out
-                </DropdownMenuItem>
-              </button>
+              <DropdownMenuItem asChild>
+                <button type="submit" className="w-full flex cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </button>
+              </DropdownMenuItem>
             </form>
           </DropdownMenuContent>
         </DropdownMenu>

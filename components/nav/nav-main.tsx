@@ -46,7 +46,11 @@ export function NavMain({
               <SidebarMenuButton 
                 asChild 
                 tooltip={item.title} 
-                isActive={pathname === item.url}
+                isActive={
+                  item.title === "Settings" 
+                    ? pathname.includes('/app/account') 
+                    : pathname === item.url
+                }
               >
                 <Link href={item.url}>
                   <item.icon />

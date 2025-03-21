@@ -10,14 +10,14 @@ interface SideNavItem {
 }
 
 const sideNavItems: SideNavItem[] = [
-  { title: "Overview", href: "/ui-kit" },
-  { title: "Buttons", href: "/ui-kit/buttons" },
-  { title: "Data Display", href: "/ui-kit/data-display" },
-  { title: "Inputs", href: "/ui-kit/inputs" },
-  { title: "Navigation", href: "/ui-kit/navigation" },
-  { title: "Layout", href: "/ui-kit/layout" },
-  { title: "Feedback", href: "/ui-kit/feedback" },
-  { title: "Sport Icons", href: "/ui-kit/sport-icons" },
+  { title: "Overview", href: "/app/ui-kit" },
+  { title: "Buttons", href: "/app/ui-kit/buttons" },
+  { title: "Data Display", href: "/app/ui-kit/data-display" },
+  { title: "Inputs", href: "/app/ui-kit/inputs" },
+  { title: "Navigation", href: "/app/ui-kit/navigation" },
+  { title: "Layout", href: "/app/ui-kit/layout" },
+  { title: "Feedback", href: "/app/ui-kit/feedback" },
+  { title: "Sport Icons", href: "/app/ui-kit/sport-icons" },
 ]
 
 export default function UIKitLayout({
@@ -34,12 +34,6 @@ export default function UIKitLayout({
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar Navigation */}
         <aside className="w-full md:w-64 shrink-0">
-          <Link 
-            href="/" 
-            className="flex items-center mb-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-muted transition-colors"
-          >
-            <span className="mr-2">←</span> Back to Home
-          </Link>
           <nav className="sticky top-24 space-y-1">
             {sideNavItems.map((item) => {
               const isActive = pathname === item.href

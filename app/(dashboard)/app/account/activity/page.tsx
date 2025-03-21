@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Settings,
   LogOut,
@@ -7,8 +7,8 @@ import {
   UserCog,
   AlertCircle,
   UserMinus,
-  Mail,
-  CheckCircle,
+  ClipboardList,
+  Calendar,
   type LucideIcon,
 } from 'lucide-react';
 import { ActivityType } from '@/lib/db/schema';
@@ -60,17 +60,20 @@ export default async function ActivityPage() {
   const logs = await getActivityLogs();
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
-        Activity Log
-      </h1>
-      <Card>
+    <div className="space-y-6">
+      <Card className="border shadow-sm">
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
+          <div className="flex items-center gap-2">
+            <ClipboardList className="h-5 w-5 text-muted-foreground" />
+            <CardTitle>Account Activity</CardTitle>
+          </div>
+          <CardDescription>
+            View a log of recent actions taken on your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {logs.length > 0 ? (
-            <ul className="space-y-4">
+            <div className="space-y-1">
               {logs.map((log) => {
                 const Icon = iconMap[log.action as ActivityType] || Settings;
                 const formattedAction = formatAction(
@@ -78,30 +81,36 @@ export default async function ActivityPage() {
                 );
 
                 return (
-                  <li key={log.id} className="flex items-center space-x-4">
-                    <div className="bg-orange-100 rounded-full p-2">
-                      <Icon className="w-5 h-5 text-orange-600" />
+                  <div 
+                    key={log.id} 
+                    className="flex items-center gap-4 p-3 rounded-md hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="bg-primary/10 rounded-full p-2 flex-shrink-0">
+                      <Icon className="w-4 h-4 text-primary" />
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">
                         {formattedAction}
                         {log.ipAddress && ` from IP ${log.ipAddress}`}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {getRelativeTime(new Date(log.timestamp))}
-                      </p>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                        <Calendar className="h-3 w-3" />
+                        <span>{getRelativeTime(new Date(log.timestamp))}</span>
+                      </div>
                     </div>
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-12">
-              <AlertCircle className="h-12 w-12 text-orange-500 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="bg-primary/10 rounded-full p-4 mb-4">
+                <AlertCircle className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">
                 No activity yet
               </h3>
-              <p className="text-sm text-gray-500 max-w-sm">
+              <p className="text-sm text-muted-foreground max-w-sm">
                 When you perform actions like signing in or updating your
                 account, they'll appear here.
               </p>
@@ -109,6 +118,6 @@ export default async function ActivityPage() {
           )}
         </CardContent>
       </Card>
-    </section>
+    </div>
   );
 }

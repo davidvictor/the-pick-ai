@@ -49,11 +49,11 @@ export function NavLeaguesPro({
               <SidebarMenuButton 
                 asChild 
                 tooltip={item.title}
-                isActive={pathname === `/leagues/${item.title}`}
+                isActive={pathname.includes(`/leagues/${item.title}`) || pathname.includes(`/app/leagues/${item.title}`)}
               >
                 <Link 
                   href={`/leagues/${item.title}`}
-                  className={pathname === `/leagues/${item.title}` ? "text-primary" : ""}
+                  className={pathname.includes(`/leagues/${item.title}`) || pathname.includes(`/app/leagues/${item.title}`) ? "text-primary" : ""}
                 >
                   <item.icon />
                   <span>{item.title}</span>
