@@ -1,5 +1,5 @@
 import { Shield } from "lucide-react"
-import { Avatar } from "../../frontend-temp/components/ui/avatar"
+import { Avatar } from "@/components/ui/avatar"
 
 export interface TeamMatchupProps {
   homeTeam: {

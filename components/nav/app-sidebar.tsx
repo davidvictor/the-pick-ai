@@ -23,7 +23,6 @@ import { NavTop } from "@/components/nav/nav-top"
 import { NavMain } from "@/components/nav/nav-main"
 import { NavLeaguesPro } from "@/components/nav/nav-leagues-pro"
 import { NavLeaguesNCAA } from "@/components/nav/nav-leagues-ncaa"
-import { useLeaguesLoading } from "@/hooks/use-leagues-loading"
 import { NavSecondary } from "@/components/nav/nav-secondary"
 import { NavUser } from "@/components/nav/nav-user"
 import {
@@ -35,6 +34,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { ROUTES } from "@/lib/routes"
+import { League } from "@/services/api-types"
 
 const data = {
   user: {
@@ -45,47 +46,47 @@ const data = {
   navTop: [
     {
       title: "Best Bets",
-      url: "/best-bets",
+      url: ROUTES.BEST_BETS,
       icon: Trophy,
     },
   ],
   navLeaguesPro: [
     {
       title: "NFL",
-      url: "/leagues/NFL",
+      url: ROUTES.LEAGUES.DETAIL("NFL" as League),
       icon: Football,
       isActive: true,
     },
     {
       title: "NBA",
-      url: "/leagues/NBA",
+      url: ROUTES.LEAGUES.DETAIL("NBA" as League),
       icon: Basketball,
     },
     {
       title: "NHL",
-      url: "/leagues/NHL",
+      url: ROUTES.LEAGUES.DETAIL("NHL" as League),
       icon: Hockey,
     },
     {
       title: "MLB",
-      url: "/leagues/MLB",
+      url: ROUTES.LEAGUES.DETAIL("MLB" as League),
       icon: Baseball,
     },
     {
       title: "MLS",
-      url: "/leagues/MLS",
+      url: ROUTES.LEAGUES.DETAIL("MLS" as League),
       icon: Soccer,
     },
   ],
   navLeaguesNCAA: [
     {
       title: "Football",
-      url: "/leagues/NCAAF",
+      url: ROUTES.LEAGUES.DETAIL("NCAAF" as League),
       icon: Football,
     },
     {
       title: "Basketball",
-      url: "/leagues/NCAAB",
+      url: ROUTES.LEAGUES.DETAIL("NCAAB" as League),
       icon: Basketball,
     },
   ],
@@ -104,12 +105,12 @@ const data = {
     // },
     {
       title: "History",
-      url: "/history",
+      url: ROUTES.HISTORY,
       icon: History,
     },
     {
       title: "Settings",
-      url: "#",
+      url: ROUTES.ACCOUNT,
       icon: Settings2,
     },
     {
@@ -138,7 +139,6 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { isLoading } = useLeaguesLoading();
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>

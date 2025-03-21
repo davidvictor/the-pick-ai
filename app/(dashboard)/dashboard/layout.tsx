@@ -1,34 +1,15 @@
 'use client';
 
-import { useEffect } from "react";
-import { notFound, useParams } from "next/navigation";
 import { GameServiceProvider } from "@/services/game-service-context";
-import { AppSidebar } from "@/components/nav/app-sidebar";
-import { AppHeader } from "@/components/ui/app-header";
-import {
-  SidebarProvider,
-} from "@/components/ui/sidebar";
-import { SidebarContent } from "@/components/ui/sidebar-content";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
     return (
       <GameServiceProvider useMockData={true}>
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarContent>
-            <AppHeader
-              breadcrumbItems={[
-                  { label: "Dashboard", isCurrentPage: true }
-                ]}
-              />
-              <main>{children}</main>
-          </SidebarContent>
-        </SidebarProvider>
+        {children}
       </GameServiceProvider>
     );
   }

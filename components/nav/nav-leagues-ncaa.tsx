@@ -4,7 +4,6 @@ import { ChevronRight } from "lucide-react"
 import type { ComponentType } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useCurrentLeague } from "@/services/game-service-context"
 import { League } from "@/services/api-types"
 
 import {
@@ -38,7 +37,6 @@ export function NavLeaguesNCAA({
     }[]
   }[]
 }) {
-  const { currentLeague } = useCurrentLeague();
   const pathname = usePathname();
   
   return (

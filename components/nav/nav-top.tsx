@@ -3,7 +3,6 @@
 import { ChevronRight, type LucideIcon } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useCurrentLeague } from "@/services/game-service-context"
 
 import {
   Collapsible,
@@ -36,7 +35,6 @@ export function NavTop({
     }[]
   }[]
 }) {
-  const { isOnBestBetsPage } = useCurrentLeague();
   const pathname = usePathname();
   return (
     <SidebarGroup className="pb-0">
