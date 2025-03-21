@@ -7,15 +7,55 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useTheme } from 'next-themes';
+import { ROUTES } from '@/lib/routes';
+import { useUser } from '@/lib/auth';
 
 export function MarketingHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logoSrc, setLogoSrc] = useState('/logo-light.svg');
   const { resolvedTheme } = useTheme();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { userPromise } = useUser();
   
+  // Effect for theme
   useEffect(() => {
     setLogoSrc(resolvedTheme === 'dark' ? '/logo-light.svg' : '/logo-dark.svg');
   }, [resolvedTheme]);
+
+  // Separate effect for user authentication
+  useEffect(() => {
+    if (userPromise) {
+      // Handle the promise in a try/catch block
+      const checkAuth = async () => {
+        try {
+          const user = await userPromise;
+          setIsAuthenticated(!!user);
+        } catch (error) {
+          console.error('Error checking authentication:', error);
+          setIsAuthenticated(false);
+        }
+      };
+      
+      checkAuth();
+    }
+  }, [userPromise]);
+  
+  // Render auth button based on authentication state
+  const renderAuthButton = () => {
+    if (isAuthenticated) {
+      return (
+        <Button asChild variant="outline" className="text-gray-900 border-gray-300 dark:text-white dark:border-gray-700">
+          <Link href={ROUTES.DASHBOARD}>Dashboard</Link>
+        </Button>
+      );
+    } else {
+      return (
+        <Button asChild variant="outline" className="text-gray-900 border-gray-300 dark:text-white dark:border-gray-700">
+          <Link href="/sign-in">Sign In</Link>
+        </Button>
+      );
+    }
+  };
 
   return (
     <header className="marketing w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
@@ -35,9 +75,7 @@ export function MarketingHeader() {
             About
           </Link>
           <ThemeToggle />
-          <Button asChild variant="outline" className="text-gray-900 border-gray-300 dark:text-white dark:border-gray-700">
-            <Link href="/sign-in">Sign In</Link>
-          </Button>
+          {renderAuthButton()}
           <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
             <Link href="/sign-up">Get Started</Link>
           </Button>
@@ -78,13 +116,23 @@ export function MarketingHeader() {
             >
               About
             </Link>
-            <Link 
-              href="/sign-in" 
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Sign In
-            </Link>
+            {isAuthenticated ? (
+              <Link 
+                href={ROUTES.DASHBOARD}
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link 
+                href="/sign-in" 
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
             <Link 
               href="/sign-up" 
               className="block rounded-md px-3 py-2 text-base font-medium text-white bg-orange-500 hover:bg-orange-600"
