@@ -2,7 +2,7 @@ import DashboardClientLayout from './layout-client';
 
 /**
  * Main dashboard layout - no longer applies authentication protection
- * Authentication is now applied only in the /authenticated route group
+ * Authentication is now applied only in the /app route group
  * via the authenticated/layout-server.tsx component
  */
 export default function DashboardLayout({ 

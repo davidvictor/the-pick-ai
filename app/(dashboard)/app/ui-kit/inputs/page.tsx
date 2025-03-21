@@ -173,6 +173,11 @@ export default function InputsPage() {
   <label htmlFor="terms">Accept terms and conditions</label>
 </div>
 
+// Size variants
+<Checkbox size="sm" /> {/* Small */}
+<Checkbox size="default" /> {/* Default */}
+<Checkbox size="lg" /> {/* Large */}
+
 // Disabled checkbox
 <Checkbox disabled />
 <Checkbox disabled checked />
@@ -183,7 +188,11 @@ const [checked, setChecked] = React.useState(false)
 <Checkbox 
   checked={checked} 
   onCheckedChange={(value) => setChecked(value === true)}
-/>`}
+/>
+
+// Animated checkmark
+// The checkbox now includes an animated checkmark that draws
+// when the checkbox is checked (automatic, no props needed)`}
               </pre>
             </div>
           </div>

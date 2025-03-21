@@ -29,6 +29,15 @@ const config: Config = {
         skeleton: '#e2e8f0',
       },
       // Other extensions can go here, but not fontFamily
+      keyframes: {
+        "checkbox-check-draw": {
+          "0%": { strokeDashoffset: "var(--stroke-length)" },
+          "100%": { strokeDashoffset: "0" }
+        }
+      },
+      animation: {
+        "checkbox-check-draw": "checkbox-check-draw 0.2s ease-in-out forwards"
+      }
     },
   },
   plugins: [require("@tailwindcss/typography")],

@@ -11,16 +11,9 @@ import { ROUTES } from '@/lib/routes';
 import { useUser } from '@/lib/auth';
 
 export function MarketingHeader() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoSrc, setLogoSrc] = useState('/logo-light.svg');
-  const { resolvedTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { userPromise } = useUser();
-  
-  // Effect for theme
-  useEffect(() => {
-    setLogoSrc(resolvedTheme === 'dark' ? '/logo-light.svg' : '/logo-dark.svg');
-  }, [resolvedTheme]);
 
   // Separate effect for user authentication
   useEffect(() => {
@@ -51,7 +44,7 @@ export function MarketingHeader() {
     } else {
       return (
         <Button asChild variant="outline" className="text-gray-900 border-gray-300 dark:text-white dark:border-gray-700">
-          <Link href="/sign-in">Sign In</Link>
+          <Link href="/auth?mode=signin">Sign In</Link>
         </Button>
       );
     }

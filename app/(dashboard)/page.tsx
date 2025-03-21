@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 /**
  * Redirect component for the dashboard root page
  * This redirects users to the root marketing page
- * The authenticated content has been moved to /authenticated
+ * The authenticated content has been moved to /app
  */
 export default function DashboardRedirect() {
   const router = useRouter();

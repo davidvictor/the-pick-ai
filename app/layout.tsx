@@ -7,6 +7,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { getUserForAppRouter } from '@/lib/db/queries';
 import "../styles/font-override.css";
 import "../styles/markdown.css";
+import "../styles/marquee.css";
 import "../styles/custom.css";
 
 const geistSans = Geist({
