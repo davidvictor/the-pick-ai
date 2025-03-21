@@ -1,9 +1,11 @@
 import { League } from "@/services/api-types";
+import { TeamData } from "../../types";
+import { addColorsToTeams } from "../utils";
 
 /**
- * NFL team data
+ * Raw NFL team data with metadata
  */
-export const NFL_TEAMS = [
+const NFL_TEAMS_RAW = [
   { 
     name: "Bills", 
     city: "Buffalo",
@@ -293,3 +295,9 @@ export const NFL_TEAMS = [
     location: "Seattle, WA"
   }
 ];
+
+/**
+ * NFL teams with color information
+ * Using utility to automatically add team colors based on abbreviation
+ */
+export const NFL_TEAMS: TeamData[] = addColorsToTeams(NFL_TEAMS_RAW);

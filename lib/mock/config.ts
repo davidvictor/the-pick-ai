@@ -1,9 +1,34 @@
 import { League } from "@/services/api-types";
+import { IMockDataConfig } from "./types";
+
+/**
+ * Get the current date in YYYY-MM-DD format
+ */
+function getCurrentDate(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
+/**
+ * Create date ranges using the current date
+ */
+function createDateRanges(): Record<League, { start: string, end: string }> {
+  const today = getCurrentDate();
+  
+  return {
+    NFL: { start: today, end: today },
+    NBA: { start: today, end: today },
+    MLB: { start: today, end: today },
+    NHL: { start: today, end: today },
+    MLS: { start: today, end: today },
+    NCAAF: { start: today, end: today },
+    NCAAB: { start: today, end: today }
+  };
+}
 
 /**
  * Configuration for the mock data generation system
  */
-export const mockDataConfig = {
+export const mockDataConfig: IMockDataConfig = {
   /**
    * Control number of games per league
    */
@@ -15,7 +40,7 @@ export const mockDataConfig = {
     MLS: 3,
     NCAAF: 15,
     NCAAB: 22
-  } as Record<League, number>,
+  },
   
   /**
    * Control number of bets per game
@@ -47,21 +72,20 @@ export const mockDataConfig = {
   
   /**
    * Control date ranges for games
-   * Always uses today's date for both start and end
+   * Uses current date by default
    */
-  dateRanges: (() => {
-    // Get today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split('T')[0];
-    
-    // Create a record with today's date for all leagues
-    return {
-      NFL: { start: today, end: today },
-      NBA: { start: today, end: today },
-      MLB: { start: today, end: today },
-      NHL: { start: today, end: today },
-      MLS: { start: today, end: today },
-      NCAAF: { start: today, end: today },
-      NCAAB: { start: today, end: today }
-    };
-  })() as Record<League, { start: string, end: string }>
+  dateRanges: createDateRanges()
 };
+
+/**
+ * Get modified configuration with custom settings
+ * Useful for testing or specialized scenarios
+ */
+export function getCustomConfig(
+  customSettings: Partial<IMockDataConfig>
+): IMockDataConfig {
+  return {
+    ...mockDataConfig,
+    ...customSettings
+  };
+}

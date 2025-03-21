@@ -2,9 +2,10 @@ import { GameCardProps } from "@/components/game-card/game-card";
 import { League } from "@/services/api-types";
 import { GameGenerator } from "./game-generator";
 import { BetGenerator } from "./bet-generator";
-import { NFL_TEAMS } from "../data/teams";
+import { NFL_TEAMS } from "../data/teams/nfl";
 import { mockDataConfig } from "../config";
 import { Bet } from "@/lib/bet-types";
+import { IBetGenerator, IMockDataConfig } from "../types";
 
 /**
  * NFL game generator
@@ -14,14 +15,15 @@ export class NFLGameGenerator extends GameGenerator {
   /**
    * Bet generator instance
    */
-  private betGenerator: BetGenerator;
+  private betGenerator: IBetGenerator;
   
   /**
    * Constructor
    * @param betGenerator Bet generator instance
+   * @param config Optional custom configuration
    */
-  constructor(betGenerator: BetGenerator) {
-    super();
+  constructor(betGenerator: IBetGenerator, config?: IMockDataConfig) {
+    super(config);
     this.betGenerator = betGenerator;
   }
   
