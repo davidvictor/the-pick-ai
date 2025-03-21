@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Suspense } from "react"
 import {
   LifeBuoy,
   Trophy,
@@ -157,7 +158,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <Suspense fallback={<div className="h-16 w-full animate-pulse bg-muted/10 rounded"></div>}>
+          <NavUser />
+        </Suspense>
       </SidebarFooter>
     </Sidebar>
   )
