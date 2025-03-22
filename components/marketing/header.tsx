@@ -64,6 +64,9 @@ export function MarketingHeader() {
           <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
             Pricing
           </Link>
+          <Link href="/history" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+            History
+          </Link>
           <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
             About
           </Link>
@@ -101,6 +104,13 @@ export function MarketingHeader() {
               onClick={() => setIsMenuOpen(false)}
             >
               Pricing
+            </Link>
+            <Link 
+              href="/history" 
+              className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              History
             </Link>
             <Link 
               href="/about" 

@@ -77,11 +77,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
     
-    // Redirect history path to marketing route group
-    if (pathname === '/history') {
-      return NextResponse.redirect(new URL('/history', request.url));
-    }
-    
     // Create a base response that we'll modify as needed
     const response = NextResponse.next();
     
