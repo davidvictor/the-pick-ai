@@ -36,11 +36,11 @@ export function MarketingFooter() {
                   Pricing
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/history" className="text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                   Bet History
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/sign-up" className="text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                   Sign Up

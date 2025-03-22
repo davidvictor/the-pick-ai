@@ -54,3 +54,13 @@
 .animate-throb {
   animation: throb 1.5s ease-in-out infinite;
 }
+
+/* Hero content radial background */
+.hero-content {
+  position: relative;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 70%, rgba(255,255,255,0) 100%);
+}
+
+.dark .hero-content {
+  background: radial-gradient(circle, rgba(7, 11, 19, 0.9) 0%, rgba(7, 11, 19, 0.3) 70%, rgba(7, 11, 19,0) 100%);
+}

@@ -6,6 +6,10 @@
   bottom: 0;
 }
 
+.bg-moneyline-container.is-hero {
+  position: absolute;
+}
+
 .bg-moneyline {
   position: absolute;
   left: 0;

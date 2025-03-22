@@ -1,8 +1,6 @@
 'use client';
 
 import { Hero } from '@/components/marketing/hero';
-import { AppPreview } from '@/components/marketing/app-preview';
-import { LeaguesShowcase } from '@/components/marketing/leagues-showcase';
 import { MarketingLayoutWrapper } from '@/components/marketing/layout-wrapper';
 
 /**
@@ -14,8 +12,6 @@ export default function HomePage() {
     <MarketingLayoutWrapper>
       <main className="flex-grow">
         <Hero />
-        <AppPreview />
-        <LeaguesShowcase />
       </main>
     </MarketingLayoutWrapper>
   );

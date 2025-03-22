@@ -1,26 +1,21 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
+import AnimatedBackground from '@/components/ui/animated-background';
 import Link from 'next/link';
-
+ 
 export function Hero() {
   return (
-    <section className="relative pt-16 pb-20 overflow-hidden bg-gray-50 dark:bg-gray-950">
+    <section className="relative overflow-hidden bg-gray-50 dark:bg-gray-950">
       {/* Background pattern */}
-      <div 
-        className="absolute inset-0 z-0 opacity-20"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(67, 67, 67, 0.3) 1px, transparent 1px)',
-          backgroundSize: '20px 20px'
-        }}
-      ></div>
+      <AnimatedBackground className='is-hero'/>      
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center hero-content pt-20 pb-24">
         {/* Win percentage banner */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-gray-100 dark:bg-gray-900 text-sm">
             <span className="mr-2 text-gray-500 dark:text-gray-400">All Time Win Percentage</span>
-            <span className="font-semibold text-orange-500">62.7%</span>
+            <span className="font-semibold text-orange-500">72.7%</span>
           </div>
         </div>
         
@@ -31,10 +26,10 @@ export function Hero() {
         </h1>
         
         {/* Subheading */}
-        <div className="max-w-3xl mx-auto mb-10">
+        <div className="max-w-2xl mx-auto mb-10">
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
-            <span className="font-semibold">Win More, Stress Less:</span> Our AI scours the web in real-time to find the best value bets 🔍, 
-            delivering winning insights straight to your pocket through our exclusive Telegram group 🔥.
+            <span className="font-semibold">Win More, Stress Less:</span> Our AI scours the web in real-time to find the best value bets, 
+            delivering winning insights straight to your pocket through our brand new web app 🔥.
           </p>
         </div>
         
