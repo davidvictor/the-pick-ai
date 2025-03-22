@@ -87,9 +87,9 @@ export function TopPicks({ className }: TopPicksProps) {
     <section className={`mb-8 ${className}`}>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Today's Top Picks</h2>
-        <Link href="/best-bets" className="text-sm text-orange-500 hover:text-orange-600">
+        {/* <Link href="/best-bets" className="text-sm text-orange-500 hover:text-orange-600">
           View all
-        </Link>
+        </Link> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -162,7 +162,7 @@ function PickCard({ pick }: PickCardProps) {
   };
 
   return (
-    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 overflow-hidden hover:border-orange-500 transition-colors">
+    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 overflow-hidden transition-colors">
       <Link href={`/games/${pick.id}`}>
         <CardHeader className="p-4 pb-2 space-y-0">
           {/* Teams and Game Info */}
@@ -238,14 +238,14 @@ function PickCard({ pick }: PickCardProps) {
         </p>
         
         {/* Actions */}
-        <div className="flex justify-between gap-2">
+        {/* <div className="flex justify-between gap-2">
           <Button variant="default" size="sm" className="flex-1 bg-orange-500 hover:bg-orange-600 text-white">
             Track Bet
           </Button>
           <Button variant="outline" size="sm" className="flex-1 border-orange-200 text-orange-500 hover:bg-orange-50 dark:border-gray-700 dark:hover:bg-gray-800">
             Full Analysis
           </Button>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

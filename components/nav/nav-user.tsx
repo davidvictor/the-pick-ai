@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { useUser } from '@/lib/auth';
-import { signOut } from '@/app/(auth)/actions';
+import { signOut } from '@/lib/auth/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
 

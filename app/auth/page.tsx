@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import AuthBox from '@/components/auth/auth-box';
-import { signIn, signUp } from '@/app/(auth)/actions';
+import { signIn, signUp } from '@/lib/auth/actions';
 import { useActionState } from 'react';
 import { ActionState } from '@/lib/auth/middleware';
 import { Button } from '@/components/ui/button';
@@ -314,7 +314,7 @@ export default function AuthPage() {
   );
 
   return (
-    <div className="flex-grow flex items-center justify-center py-12">
+    <div className="flex-grow flex items-start justify-center py-12">
       <AuthBox 
         initialTab={activeTab}
         signinForm={SignInForm}

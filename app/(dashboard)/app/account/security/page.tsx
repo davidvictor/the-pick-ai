@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from '@/components/ui/label';
 import { AlertTriangle, Lock, KeyRound, ShieldAlert, Trash2, Loader2 } from 'lucide-react';
 import { startTransition, useActionState } from 'react';
-import { updatePassword, deleteAccount } from '@/app/(auth)/actions';
+import { updatePassword, deleteAccount } from '@/lib/auth/actions';
 
 type ActionState = {
   error?: string;
