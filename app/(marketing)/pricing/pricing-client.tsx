@@ -113,11 +113,11 @@ export function PricingContent({
           interval={basePrice?.interval || 'month'}
           trialDays={basePrice?.trialPeriodDays || 14}
           features={[
-            'Unlimited Usage',
-            'Unlimited Workspace Members',
+            '3 Best Bets Per Day',
+            'Basic Game Stats & Insights',
+            'Major League Coverage',
             'Email Support',
-            'Access to Core Features',
-            'Regular Updates'
+            'Weekend Betting Guides'
           ]}
           priceId={basePrice?.id}
         />
@@ -127,11 +127,12 @@ export function PricingContent({
           interval={plusPrice?.interval || 'month'}
           trialDays={plusPrice?.trialPeriodDays || 14}
           features={[
-            'Everything in Base, and:',
-            'Early Access to New Features',
-            '24/7 Priority Support',
-            'Slack Community Access',
-            'Advanced Analytics'
+            'Everything in Base, plus:',
+            'Unlimited Best Bets (All Games & Leagues)',
+            'Advanced Statistical Analysis',
+            'Live Betting Recommendations',
+            'Expert Insights & Prop Bet Strategies',
+            'Priority 24/7 Support'
           ]}
           priceId={plusPrice?.id}
           isPremium={true}
