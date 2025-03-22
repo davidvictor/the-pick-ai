@@ -9,10 +9,10 @@ import type { NextConfig } from 'next';
  * - Added dynamicParams false for better static optimization
  */
 const nextConfig: NextConfig = {
-  // Use PPR (Partial Prerendering) for better performance
-  experimental: {
-    ppr: true
-  },
+  // PPR (Partial Prerendering) is only available in canary versions
+  // experimental: {
+  //   ppr: true
+  // },
   
   // Set the build output 
   // We'll leave this undefined to use the default Next.js behavior

@@ -35,7 +35,17 @@ export function protectServerPage(options?: {
     // No longer return a session object since we're not using cookies
     return { isAuthenticated: true };
   } catch (error) {
-    console.error('Protection error:', error);
+    // Check if this is a redirect error (expected behavior) or an actual error
+    const isRedirectError = error instanceof Error && 
+      'digest' in error && 
+      typeof error.digest === 'string' && 
+      error.digest.startsWith('NEXT_REDIRECT');
+    
+    // Only log actual errors, not expected redirects
+    if (!isRedirectError) {
+      console.error('Protection error:', error);
+    }
+    
     // Still redirect on error for security
     redirect(options?.redirectTo || '/sign-in');
   }
